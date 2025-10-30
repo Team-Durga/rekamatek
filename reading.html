@@ -6,8 +6,8 @@
 <title>Szövegértés 💖</title>
 <style>
 body { font-family:sans-serif; background:#ffe6f0; text-align:center; padding:20px; }
-.container { background:#fff; padding:20px; border-radius:15px; max-width:500px; margin:auto; }
-button { padding:8px 12px; margin:5px; width:80%; }
+.container { background:#fff; padding:20px; border-radius:15px; max-width:600px; margin:auto; }
+button { padding:8px 12px; margin:5px; width:80%; cursor:pointer; }
 .answer-btn { display:block; margin:5px auto; width:80%; }
 .correct { background-color:#b2ffb2; }
 .wrong { background-color:#ff9999; }
@@ -24,94 +24,127 @@ button { padding:8px 12px; margin:5px; width:80%; }
 </div>
 
 <script>
+// Több történet tömbben
+const stories = [
+  {
+    text: "Anna reggel felkelt, megette a reggelijét, majd felöltözött. Anyukája segített a táskáját elkészíteni. Elindult az iskolába a barátnőjével. Útközben megláttak egy kismadarat a fűben. Az iskolában vidáman üdvözölték a tanító nénit. A tanóra nagyon érdekes volt, mindenki figyelt. Délben együtt ebédeltek az osztálytársakkal a menzán. Ebéd után a kertben játszottak, labdáztak és nevettek. Az órák után hazafelé sétáltak, közben beszélgettek az új könyvekről. Végül Anna hazaért, megosztotta anyukájával a nap élményeit, majd elkészült a házi feladattal. Estefelé a család vacsorázott, és Anna segített az asztal megterítésében. Lefekvés előtt elolvasta kedvenc meséjét, majd álomba szenderült.",
+    questions:[
+      {q:"Mit csinált Anna reggel?", a:["Aludt","Felöltözött és reggelizett","Kedvenc meséjét nézte"], correct:1},
+      {q:"Kivel ment az iskolába?", a:["Egyedül","A barátnőjével","A testvérével"], correct:1},
+      {q:"Mit láttak útközben?", a:["Egy kismadarat","Egy kutyát","Egy cicát"], correct:0},
+      {q:"Hogyan üdvözölte Anna a tanító nénit?", a:["Vidáman","Szomorúan","Dühösen"], correct:0},
+      {q:"Hol játszottak ebéd után?", a:["Teremben","Kertben","Folyosón"], correct:1},
+      {q:"Miről beszélgettek hazafelé?", a:["Új könyvekről","Időjárásról","Ételről"], correct:0},
+      {q:"Mit csinált Anna este?", a:["Mesét nézett","Házi feladatot készített","Aludt"], correct:1}
+    ]
+  },
+  {
+    text:"Márti és a kiscicája, Cirmi, a kertben játszottak. Cirmi szeretett futkározni és felmászni a fára. Márti labdát gurított neki, és Cirmi mindig visszahozta. Egyszer egy pillangót követett a macska, és Márti nevette. Délután a nagymama is kijött a kertbe, és együtt etették a madarakat. Cirmi kíváncsian figyelte a galambokat. Márti rajzolt egy képet a cicáról, ahogy a virágok között fut. Este Márti megetette Cirmit, és a szobában játszottak tovább. A család vacsorája után mindenki leült a kanapéra mesét olvasni. Cirmi az ölében aludt el, Márti pedig boldogan simogatta. Végül Márti elrakta a játékokat, és lefeküdt aludni. Másnap reggel Márti és Cirmi újra a kertbe mentek játszani, és a nap csodálatosan kezdődött.",
+    questions:[
+      {q:"Kivel játszott Márti a kertben?", a:["A barátjával","A kiscicájával","A testvérével"], correct:1},
+      {q:"Mit szeretett Cirmi csinálni?", a:["Olvasni","Futkározni és fára mászni","Aludni a kanapén"], correct:1},
+      {q:"Mit követett egyszer Cirmi?", a:["Egy pillangót","Egy kutyát","Egy labdát"], correct:0},
+      {q:"Ki jött délután a kertbe?", a:["Nagymama","Tanárnő","Barát"], correct:0},
+      {q:"Mit csinált Márti a cicával kapcsolatosan?", a:["Rajzolt egy képet","Főzött","Aludt"], correct:0},
+      {q:"Hol aludt Cirmi este?", a:["Az ágyban","Az ölében","A kertben"], correct:1},
+      {q:"Mit csinált Márti este?", a:["Elrakta a játékokat","Elment sétálni","Mesét olvasott"], correct:0}
+    ]
+  },
+  {
+    text:"Dani és Lili a parkban találtak egy titkos ösvényt. Az ösvényen kis fahidak vezettek egy tóhoz. A tó partján rengeteg virág nyílt, és pillangók repkedtek körülöttük. Dani és Lili leültek a fűbe, és elhatározták, hogy naplót írnak a felfedezésről. Találtak egy kicsi házikót, ami elhagyatottnak tűnt, de nagyon aranyos volt. Körbejárták a házikót, és megfigyelték a kis ablakokat. Délután a napocska sütött, és madarak csicseregtek. Hazafelé menet meséltek a szüleiknek a kalandról. Este a naplót közösen rajzokkal díszítették. Dani boldogan mesélte, milyen volt az ösvény, Lili pedig a virágokat rajzolta. Mielőtt aludni mentek, megtervezték a következő felfedezést. Másnap újra a parkba mentek, hogy tovább kutassák az ösvényt. A nap csodásan sütött, és mindenki vidáman játszott.",
+    questions:[
+      {q:"Hol találták a titkos ösvényt?", a:["Iskolában","Parkban","Boltban"], correct:1},
+      {q:"Hová vezetett az ösvény?", a:["Egy játszótérre","Egy tóhoz","Egy házhoz"], correct:1},
+      {q:"Mit csináltak a tó partján?", a:["Futottak","Leültek és naplót írtak","Aludtak"], correct:1},
+      {q:"Mit találtak az ösvényen?", a:["Egy kicsi házikót","Egy autót","Egy kincset"], correct:0},
+      {q:"Mi díszítette a naplót?", a:["Rajzok","Színes ceruzák","Semmi"], correct:0},
+      {q:"Ki rajzolta a virágokat?", a:["Dani","Lili","Tanárnő"], correct:1},
+      {q:"Mit terveztek este?", a:["Következő felfedezést","Vacsorát","Kirándulást a nagymamával"], correct:0}
+    ]
+  },
+  {
+    text:"Egy kis tündér, Pici, a varázserdőben élt. Minden reggel felkelt és a patakhoz ment inni. A patak partján színes virágok nyíltak, és a pillangók táncoltak a levegőben. Pici imádott repülni a fák között, és új barátokat találni. Egyszer találkozott egy mókussal, aki elvesztette a mogyoróját. Pici segített neki megtalálni. A tündér gyakran gyűjtött csillogó köveket az ösvény mentén. Délután a varázserdőben a fák susogtak, és a madarak énekeltek. Este Pici hazarepült a kis kunyhójába, ahol fáklyák világították meg az útját. Lefekvés előtt a tündér átgondolta a nap kalandjait és boldogan aludt el. Másnap új kalandokat tervezett a barátaival, és nagyon izgatottan várta a napot. A nap csodásan kezdődött, és Pici újabb mókust talált.",
+    questions:[
+      {q:"Hol élt Pici?", a:["Városban","Varázserdőben","Iskolában"], correct:1},
+      {q:"Mit csinált reggel Pici?", a:["Aludt","A patakhoz ment inni","Játszott a barátokkal"], correct:1},
+      {q:"Mit talált Pici a mókussal kapcsolatban?", a:["Mogyorót","Kulcsot","Labdát"], correct:0},
+      {q:"Mit gyűjtött Pici gyakran?", a:["Csillogó köveket","Leveleket","Virágokat"], correct:0},
+      {q:"Mikor susogtak a fák és énekeltek a madarak?", a:["Reggel","Délután","Este"], correct:1},
+      {q:"Hová repült este Pici?", a:["Iskolába","Kunhójába","Fákra"], correct:1},
+      {q:"Mit tervezett másnap Pici?", a:["Új kalandokat","Vásárlást","Tanulást"], correct:0}
+    ]
+  },
+  {
+    text:"Zsófi és a nagypapája a piacra mentek szombaton reggel. Ott friss gyümölcsöt és zöldséget vásároltak. Zsófi szerette a piacon a színes standokat és a finom illatokat. Megnézték a halas standot, ahol a nagypapa mesélt a különböző halakról. Zsófi kipróbálta az új fagyit, amit a nagypapa vett neki. Utána sétáltak a közeli parkban és etették a kacsákat. Délután hazamentek, és Zsófi segített anyukájának a vacsora elkészítésében. Este együtt nézték a családi fotókat, és Zsófi mesélt a nap élményeiről. A nagypapa büszkén hallgatta a történeteket. Lefekvés előtt Zsófi elpakolta a játékait és boldogan aludt el. Másnap reggel Zsófi újra a piacra ment nagypapájával, hogy új gyümölcsöket válasszanak. A piac tele volt finomságokkal és színes zöldségekkel.",
+    questions:[
+      {q:"Hová mentek Zsófiék?", a:["Piacra","Iskolába","Tengerhez"], correct:0},
+      {q:"Mit vásároltak?", a:["Cipőt","Gyümölcsöt és zöldséget","Játékot"], correct:1},
+      {q:"Mit szerette Zsófi a piacon?", a:["Standokat és illatokat","Csak az édességet","A színes ruhákat"], correct:0},
+      {q:"Mit mesélt a nagypapa a halakról?", a:["Semmit","Különböző halakról","Csak a pontyokról"], correct:1},
+      {q:"Mit csináltak a parkban?", a:["Etették a kacsákat","Futottak","Aludtak"], correct:0},
+      {q:"Mit néztek este együtt?", a:["Mesét","Családi fotókat","Képregényt"], correct:1},
+      {q:"Hogyan aludt el Zsófi?", a:["Boldogan","Szomorúan","Dühösen"], correct:0}
+    ]
+  },
+  {
+    text:"Bence és a robotja a garázsban dolgoztak. A robot Bence parancsait követte és segített az építkezésben. Bence terveket rajzolt a papírra, és a robot összeszerelte a kis részeket. Egyszer a robot megbotlott, de Bence nevetett rajta. A szomszéd kutyája végigugatta a munkát, ami nagyon vicces volt. Délután Bence és a robot a szerszámokat rendezték el. Bence kipróbálta az új programot, amit a robotba írt. Este a garázsban minden rendben volt, és a robot „pihent”. Bence mesélt a testvérének a napi kalandról. Lefekvés előtt elrakta a rajzokat és terveket. Másnap új ötleteket talált ki a robothoz, hogy még ügyesebb legyen. A szomszédok kíváncsian figyelték a robotot. Bence nagyon büszke volt a nap végén a munkára. A robot és Bence új kihívásokra készült, és izgatottan várta a következő napot.",
+    questions:[
+      {q:"Hol dolgoztak Bence és a robot?", a:["Konyhában","Garázsban","Iskolában"], correct:1},
+      {q:"Mit csinált a robot?", a:["Összeszerelte a kis részeket","Főzött","Aludt"], correct:0},
+      {q:"Mi történt, amikor a robot megbotlott?", a:["Bence sírt","Bence nevetett","Bence mérges lett"], correct:1},
+      {q:"Mi zavarta a munkát?", a:["Eső","Szomszéd kutya","Kedvenc labda"], correct:1},
+      {q:"Mit próbált ki Bence délután?", a:["Új programot","Új játékot","Új könyvet"], correct:0},
+      {q:"Mit csinált este a robot?", a:["Pihent","Futott","Játszott"], correct:0},
+      {q:"Mit csinált Bence másnap?", a:["Új ötleteket talált ki","Aludt","Sütött"], correct:0}
+    ]
+  },
+  {
+    text:"Lilla és a barátai az erdőbe mentek gombászni. Találtak sok színes gombát és közben meséltek egymásnak történeteket. Lilla nagyon figyelt, hogy ne tapossanak le semmit. Egyszer egy mókus is megjelent a fa alatt, és játszani kezdett velük. Délben a réten megpihentek, és megették az uzsonnájukat. A napfény átsütött a fák lombjai között, és gyönyörű árnyékokat vetett. Lilla fényképezőgéppel örökítette meg a pillanatot. Este hazamentek, és mindenki beszámolt a szüleinek a kalandról. Lilla lefekvés előtt átnézte a fényképeket, és nagyon boldog volt. Másnap új kalandokat terveztek az erdőben, hogy új gombákat találjanak.",
+    questions:[
+      {q:"Hová ment Lilla és a barátai?", a:["Iskolába","Erdőbe","Parkba"], correct:1},
+      {q:"Mit találtak?", a:["Virágokat","Színes gombákat","Kincset"], correct:1},
+      {q:"Mit csinált a mókus?", a:["Játszott velük","Aludt","Etetett"], correct:0},
+      {q:"Hol pihentek délben?", a:["Az erdőben","A réten","Otthon"], correct:1},
+      {q:"Mit csinált Lilla a fényképezőgéppel?", a:["Fényképezett","Rajzolt","Olvasott"], correct:0},
+      {q:"Mit csináltak este?", a:["Meséltek a szüleiknek","Aludtak","Játszottak"], correct:0},
+      {q:"Mit terveztek másnap?", a:["Új kalandokat","Kirándulást a tengerhez","Iskolát"], correct:0}
+    ]
+  },
+  {
+    text:"Peti és a családja a tengerpartra mentek nyaralni. Ott homokvárat építettek és kagylókat gyűjtöttek. Peti szerette a hullámokat nézni és a parton sétálni. Egyszer talált egy kis teknőst, és óvatosan visszaengedte a vízbe. Délután a családja együtt fürdött a tengerben. Este a naplementét nézték, és meséltek egymásnak a napi élményekről. Lefekvés előtt Peti papája mesélt neki a tenger élővilágáról. Másnap újra a partra mentek, hogy folytassák a játékot. Peti boldogan szaladgált a homokban, és új kagylókat talált. A nap csodásan telt, mindenki élvezte a nyaralást.",
+    questions:[
+      {q:"Hová ment Peti és a családja?", a:["Erdei kirándulásra","Tengerpartra","Iskolába"], correct:1},
+      {q:"Mit építettek a parton?", a:["Focipályát","Homokvárat","Csúszdát"], correct:1},
+      {q:"Mit talált Peti?", a:["Teknőst","Kacsát","Macskát"], correct:0},
+      {q:"Mit csinált délután a család?", a:["Fürdött a tengerben","Aludt","Evett"], correct:0},
+      {q:"Mit néztek este?", a:["Naplementét","Filmet","Mesét"], correct:0},
+      {q:"Mit mesélt a papa?", a:["A tenger élővilágáról","Autókról","Csillagokról"], correct:0},
+      {q:"Mit csinált Peti másnap?", a:["Folytatta a játékot a parton","Tanult","Aludt"], correct:0}
+    ]
+  }
+];
+
+let storyIndex = 0;
+let currentQuestion = 0;
+
 const textDiv = document.getElementById('text');
 const questionDiv = document.getElementById('question');
 const answersDiv = document.getElementById('answers');
 const resultDiv = document.getElementById('result');
 
-const story = {
-  text: "Anna reggel felkelt, megette a reggelijét, majd felöltözött. Anyukája segített a táskáját elkészíteni. Elindult az iskolába a barátnőjével. Útközben megláttak egy kismadarat a fűben. Az iskolában vidáman üdvözölték a tanító nénit. A tanóra nagyon érdekes volt, mindenki figyelt. Délben együtt ebédeltek az osztálytársakkal a menzán. Ebéd után a kertben játszottak, labdáztak és nevettek. Az órák után hazafelé sétáltak, közben beszélgettek az új könyvekről. Végül Anna hazaért, megosztotta anyukájával a nap élményeit, majd elkészült a házi feladattal.",
-  questions: [
-    {q:"Mit csinált Anna reggel?", a:["Aludt","Felöltözött és reggelizett","Kedvenc meséjét nézte"], correct:1},
-    {q:"Kivel ment az iskolába?", a:["Egyedül","A barátnőjével","A testvérével"], correct:1},
-    {q:"Mit láttak útközben?", a:["Egy kismadarat","Egy kutyát","Egy cicát"], correct:0},
-    {q:"Hogyan üdvözölte Anna a tanító nénit?", a:["Vidáman","Szomorúan","Dühösen"], correct:0},
-    {q:"Hol játszottak ebéd után?", a:["Teremben","Kertben","Folyosón"], correct:1},
-    {q:"Miről beszélgettek hazafelé?", a:["Új könyvekről","Időjárásról","Ételről"], correct:0},
-    {q:"Mit csinált Anna este?", a:["Mesét nézett","Házi feladatot készített","Aludt"], correct:1}
-  ]
-  {
-  text:"Márti és a kiscicája, Cirmi, a kertben játszottak. Cirmi szeretett futkározni és felmászni a fára. Márti labdát gurított neki, és Cirmi mindig visszahozta. Egyszer egy pillangót követett a macska, és Márti nevette. Délután a nagymama is kijött a kertbe, és együtt etették a madarakat. Cirmi kíváncsian figyelte a galambokat. Márti rajzolt egy képet a cicáról, ahogy a virágok között fut. Este Márti megetette Cirmit, és a szobában játszottak tovább. A család vacsorája után mindenki leült a kanapéra mesét olvasni. Cirmi az ölében aludt el, Márti pedig boldogan simogatta. Végül Márti elrakta a játékokat, és lefeküdt aludni.", 
-  questions:[
-    {q:"Kivel játszott Márti a kertben?", a:["A barátjával","A kiscicájával","A testvérével"], correct:1},
-    {q:"Mit szeretett Cirmi csinálni?", a:["Olvasni","Futkározni és fára mászni","Aludni a kanapén"], correct:1},
-    {q:"Mit követett egyszer Cirmi?", a:["Egy pillangót","Egy kutyát","Egy labdát"], correct:0},
-    {q:"Ki jött délután a kertbe?", a:["Nagymama","Tanárnő","Barát"], correct:0},
-    {q:"Mit csinált Márti a cicával kapcsolatosan?", a:["Rajzolt egy képet","Főzött","Aludt"], correct:0},
-    {q:"Hol aludt Cirmi este?", a:["Az ágyban","Az ölében","A kertben"], correct:1},
-    {q:"Mit csinált Márti este?", a:["Elrakta a játékokat","Elment sétálni","Mesét olvasott"], correct:0]
-    },
-  {
-  text:"Dani és Lili a parkban találtak egy titkos ösvényt. Az ösvényen kis fahidak vezettek egy tóhoz. A tó partján rengeteg virág nyílt, és pillangók repkedtek körülöttük. Dani és Lili leültek a fűbe, és elhatározták, hogy naplót írnak a felfedezésről. Találtak egy kicsi házikót, ami elhagyatottnak tűnt, de nagyon aranyos volt. Körbejárták a házikót, és megfigyelték a kis ablakokat. Délután a napocska sütött, és madarak csicseregtek. Hazafelé menet meséltek a szüleiknek a kalandról. Este a naplót közösen rajzokkal díszítették. Dani boldogan mesélte, milyen volt az ösvény, Lili pedig a virágokat rajzolta. Mielőtt aludni mentek, megtervezték a következő felfedezést.", 
-  questions:[
-    {q:"Hol találták a titkos ösvényt?", a:["Iskolában","Parkban","Boltban"], correct:1},
-    {q:"Hová vezetett az ösvény?", a:["Egy játszótérre","Egy tóhoz","Egy házhoz"], correct:1},
-    {q:"Mit csináltak a tó partján?", a:["Futottak","Leültek és naplót írtak","Aludtak"], correct:1},
-    {q:"Mit találtak az ösvényen?", a:["Egy kicsi házikót","Egy autót","Egy kincset"], correct:0},
-    {q:"Mi díszítette a naplót?", a:["Rajzok","Színes ceruzák","Semmi"], correct:0},
-    {q:"Ki rajzolta a virágokat?", a:["Dani","Lili","Tanárnő"], correct:1},
-    {q:"Mit terveztek este?", a:["Következő felfedezést","Vacsorát","Kirándulást a nagymamával"], correct:0]
-    },
-  {
-  text:"Egy kis tündér, Pici, a varázserdőben élt. Minden reggel felkelt és a patakhoz ment inni. A patak partján színes virágok nyíltak, és a pillangók táncoltak a levegőben. Pici imádott repülni a fák között, és új barátokat találni. Egyszer találkozott egy mókussal, aki elvesztette a mogyoróját. Pici segített neki megtalálni. A tündér gyakran gyűjtött csillogó köveket az ösvény mentén. Délután a varázserdőben a fák susogtak, és a madarak énekeltek. Este Pici hazarepült a kis kunyhójába, ahol fáklyák világították meg az útját. Lefekvés előtt a tündér átgondolta a nap kalandjait és boldogan aludt el. Másnap új kalandokat tervezett a barátaival.", 
-  questions:[
-    {q:"Hol élt Pici?", a:["Városban","Varázserdőben","Iskolában"], correct:1},
-    {q:"Mit csinált reggel Pici?", a:["Aludt","A patakhoz ment inni","Játszott a barátokkal"], correct:1},
-    {q:"Mit talált Pici a mókussal kapcsolatban?", a:["Mogyorót","Kulcsot","Labdát"], correct:0},
-    {q:"Mit gyűjtött Pici gyakran?", a:["Csillogó köveket","Leveleket","Virágokat"], correct:0},
-    {q:"Mikor susogtak a fák és énekeltek a madarak?", a:["Reggel","Délután","Este"], correct:1},
-    {q:"Hová repült este Pici?", a:["Iskolába","Kunhójába","Fákra"], correct:1},
-    {q:"Mit tervezett másnap Pici?", a:["Új kalandokat","Vásárlást","Tanulást"], correct:0]
-    },
-  {
-  text:"Zsófi és a nagypapája a piacra mentek szombaton reggel. Ott friss gyümölcsöt és zöldséget vásároltak. Zsófi szerette a piacon a színes standokat és a finom illatokat. Megnézték a halas standot, ahol a nagypapa mesélt a különböző halakról. Zsófi kipróbálta az új fagyit, amit a nagypapa vett neki. Utána sétáltak a közeli parkban és etették a kacsákat. Délután hazamentek, és Zsófi segített anyukájának a vacsora elkészítésében. Este együtt nézték a családi fotókat, és Zsófi mesélt a nap élményeiről. A nagypapa büszkén hallgatta a történeteket. Lefekvés előtt Zsófi elpakolta a játékait és boldogan aludt el.", 
-  questions:[
-    {q:"Hová mentek Zsófiék?", a:["Piacra","Iskolába","Tengerhez"], correct:0},
-    {q:"Mit vásároltak?", a:["Cipőt","Gyümölcsöt és zöldséget","Játékot"], correct:1},
-    {q:"Mit szerette Zsófi a piacon?", a:["Standokat és illatokat","Csak az édességet","A színes ruhákat"], correct:0},
-    {q:"Mit mesélt a nagypapa a halakról?", a:["Semmit","Különböző halakról","Csak a pontyokról"], correct:1},
-    {q:"Mit csináltak a parkban?", a:["Etették a kacsákat","Futottak","Aludtak"], correct:0},
-    {q:"Mit néztek este együtt?", a:["Mesét","Családi fotókat","Képregényt"], correct:1},
-    {q:"Hogyan aludt el Zsófi?", a:["Boldogan","Szomorúan","Dühösen"], correct:0]
-    },
-  {
-  text:"Bence és a robotja a garázsban dolgoztak. A robot Bence parancsait követte és segített az építkezésben. Bence terveket rajzolt a papírra, és a robot összeszerelte a kis részeket. Egyszer a robot megbotlott, de Bence nevetett rajta. A szomszéd kutyája végigugatta a munkát, ami nagyon vicces volt. Délután Bence és a robot a szerszámokat rendezték el. Bence kipróbálta az új programot, amit a robotba írt. Este a garázsban minden rendben volt, és a robot „pihent”. Bence mesélt a testvérének a napi kalandról. Lefekvés előtt elrakta a rajzokat és terveket. Másnap új ötleteket talált ki a robothoz, hogy még ügyesebb legyen. A szomszédok kíváncsian figyelték a robotot. Bence nagyon büszke volt a nap végén a munkára.", 
-  questions:[
-    {q:"Hol dolgoztak Bence és a robot?", a:["Konyhában","Garázsban","Iskolában"], correct:1},
-    {q:"Mit csinált a robot?", a:["Összeszerelte a kis részeket","Főzött","Aludt"], correct:0},
-    {q:"Mi történt, amikor a robot megbotlott?", a:["Bence sírt","Bence nevetett","Bence mérges lett"], correct:1},
-    {q:"Mi zavarta a munkát?", a:["Eső","Szomszéd kutya","Kedvenc labda"], correct:1},
-    {q:"Mit próbált ki Bence délután?", a:["Új programot","Új játékot","Új könyvet"], correct:0},
-    {q:"Mit csinált este a robot?", a:["Pihent","Futott","Játszott"], correct:0},
-    {q:"Mit csinált Bence másnap?", a:["Új ötleteket talált ki","Aludt","Sütött"], correct:0]
-    }
-};
+// megjelenítjük az aktuális történetet
+textDiv.textContent = stories[storyIndex].text;
 
-let current = 0;
-
-// megjelenítjük a történetet
-textDiv.textContent = story.text;
-
-// kérdés mutatása
-function showQuestion() {
-  if(current >= story.questions.length) {
+function showQuestion(){
+  const story = stories[storyIndex];
+  if(currentQuestion >= story.questions.length){
     questionDiv.textContent = "🎉 Kész! Jó munka!";
     answersDiv.innerHTML = "";
     resultDiv.textContent = "";
     return;
   }
-  
-  const q = story.questions[current];
+
+  const q = story.questions[currentQuestion];
   questionDiv.textContent = q.q;
   answersDiv.innerHTML = "";
   resultDiv.textContent = "";
@@ -120,12 +153,12 @@ function showQuestion() {
     const btn = document.createElement('button');
     btn.textContent = ans;
     btn.className = 'answer-btn';
-    btn.onclick = () => {
-      if(i === q.correct){ btn.classList.add('correct'); resultDiv.textContent = "🌸 Ügyes vagy!";}
-      else{ btn.classList.add('wrong'); resultDiv.textContent = "❌ Próbáld újra!";}
+    btn.onclick = ()=>{
+      if(i===q.correct){ btn.classList.add('correct'); resultDiv.textContent="🌸 Ügyes vagy!";}
+      else{ btn.classList.add('wrong'); resultDiv.textContent="❌ Próbáld újra!";}
       Array.from(answersDiv.children).forEach(b=>b.disabled=true);
       setTimeout(()=>{
-        current++;
+        currentQuestion++;
         showQuestion();
       },700);
     };
