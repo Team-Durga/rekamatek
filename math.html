@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matek Gyakorló 💖</title>
+<style>
+body { font-family:sans-serif; background:#ffe6f0; text-align:center; padding:20px; }
+.container { background:#fff; padding:20px; border-radius:15px; max-width:500px; margin:auto; }
+button, select { margin:5px; padding:8px 12px; font-size:1em; }
+.answer-btn { display:block; margin:5px auto; padding:8px 12px; width:80%; }
+.correct { background-color: #b2ffb2; }
+.wrong { background-color: #ff9999; }
+</style>
+</head>
+<body>
+<h1>💖 Matek Gyakorló 💖</h1>
+<div class="container">
+<label for="mode">Művelet:</label>
+<select id="mode">
+<option value="multiply">Szorzás</option>
+<option value="divide">Osztás</option>
+</select>
+<label for="difficulty">Nehézség:</label>
+<select id="difficulty">
+<option value="easy">Könnyű</option>
+<option value="hard">Nehéz</option>
+</select>
+<button id="newBtn">Új feladat 💫</button>
+<div id="question"></div>
+<div id="answers"></div>
+<div id="result"></div>
+</div>
+
+<script>
+const newBtn = document.getElementById('newBtn');
+const questionDiv = document.getElementById('question');
+const answersDiv = document.getElementById('answers');
+const resultDiv = document.getElementById('result');
+
+function randomInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+function newMathQuestion(){
+  questionDiv.textContent=""; answersDiv.innerHTML=""; resultDiv.textContent="";
+  let a,b,correct,txt;
+  const mode=document.getElementById('mode').value;
+  const difficulty=document.getElementById('difficulty').value;
+
+  if(mode==='multiply'){
+    do{a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);}while(a*b>100);
+    correct=a*b; txt=`${a} × ${b} = ?`;
+  } else {
+    a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);
+    while(a*b>100){a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);}
+    correct=a; txt=`${a*b} ÷ ${b} = ?`;
+  }
+
+  questionDiv.textContent=txt;
+  const answers=new Set([correct]);
+  while(answers.size<3){let w=randomInt(0,100); if(w!==correct) answers.add(w);}
+  Array.from(answers).sort(()=>Math.random()-0.5).forEach(ans=>{
+    const btn=document.createElement('button');
+    btn.textContent=ans; btn.className='answer-btn';
+    btn.onclick=()=>{
+      if(ans===correct){btn.classList.add('correct'); resultDiv.textContent="✨ Helyes válasz!";}
+      else{btn.classList.add('wrong'); resultDiv.textContent="❌ Próbáld újra!";}
+      Array.from(answersDiv.children).forEach(b=>b.disabled=true);
+    };
+    answersDiv.appendChild(btn);
+  });
+}
+
+newBtn.addEventListener('click', newMathQuestion);
+</script>
+</body>
+</html>
