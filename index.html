@@ -135,14 +135,25 @@ function newQuestion() {
   resultDiv.textContent = "";
   answersDiv.innerHTML = "";
 
-  let a = randomInt(1, 100);
-  let b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
-  let correctAnswer, questionText;
+  let a, b, correctAnswer, questionText;
 
   if (mode === 'multiply') {
+    // Szorzás – generálás addig, amíg az eredmény nem nagyobb mint 100
+    do {
+      a = randomInt(1, 100);
+      b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
+    } while (a * b > 100);
     correctAnswer = a * b;
     questionText = `${a} × ${b} = ?`;
+
   } else {
+    // Osztás – eredmény és osztó generálása, majd szorzat kiszámítása
+    a = randomInt(1, 100);
+    b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
+    while (a * b > 100) {
+      a = randomInt(1, 100);
+      b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
+    }
     correctAnswer = a;
     let result = a * b;
     questionText = `${result} ÷ ${b} = ?`;
@@ -150,13 +161,12 @@ function newQuestion() {
 
   questionDiv.textContent = questionText;
 
-  // Random válaszok generálása
+  // Válaszlehetőségek – mindig 0–100 között
   const answers = new Set();
   answers.add(correctAnswer);
   while (answers.size < 3) {
-    let wrong = correctAnswer + randomInt(-10, 10);
-    if (wrong < 0) wrong = 0;
-    answers.add(wrong);
+    let wrong = randomInt(0, 100);
+    if (wrong !== correctAnswer) answers.add(wrong);
   }
 
   const shuffled = Array.from(answers).sort(() => Math.random() - 0.5);
