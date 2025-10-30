@@ -5,201 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Csajos Gyakorló 💕</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ffe6f0, #ffccff);
-    color: #c2185b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px 0;
-  }
-  h1 {
-    color: #ad1457;
-    text-shadow: 1px 1px #fff;
-    font-weight: 600;
-  }
-  .container {
-    background: #fff9fc;
-    border: 3px solid #f48fb1;
-    border-radius: 20px;
-    padding: 20px 30px;
-    box-shadow: 0 0 15px #ffc1e3;
-    text-align: center;
-    max-width: 550px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  select, button {
-    background-color: #f8bbd0;
-    border: none;
-    border-radius: 12px;
-    padding: 8px 14px;
-    margin: 8px;
-    font-size: 1em;
-    color: #4a004a;
-    cursor: pointer;
-    transition: 0.2s;
-    font-weight: 600;
-  }
-  select:hover, button:hover {
-    background-color: #f48fb1;
-    transform: scale(1.03);
-  }
-  .text {
-    background-color: #fff0f5;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 12px;
-    font-size: 1.05em;
-    text-align: left;
-    line-height: 1.45;
-  }
-  .question {
-    font-size: 1.15em;
-    margin: 12px 0 8px;
-    color: #6a1b9a;
-    font-weight: 600;
-  }
-  .answers {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .answer-btn {
-    background-color: #fce4ec;
-    border: 2px solid #f48fb1;
-    border-radius: 10px;
-    padding: 8px;
-    color: #6a1b9a;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.15s;
-    text-align: left;
-  }
-  .answer-btn:hover {
-    background-color: #f48fb1;
-    color: white;
-  }
-  .correct {
-    background-color: #b2ffb2 !important;
-    color: #004d00 !important;
-  }
-  .wrong {
-    background-color: #ff9999 !important;
-    color: #4a0000 !important;
-  }
-  .result {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #880e4f;
-    min-height: 1.2em;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#ffe6f0,#ffccff); color:#c2185b; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100vh; margin:0; padding:20px 0; }
+h1 { color:#ad1457; text-shadow:1px 1px #fff; font-weight:600; }
+.container { background:#fff9fc; border:3px solid #f48fb1; border-radius:20px; padding:20px 30px; box-shadow:0 0 15px #ffc1e3; text-align:center; max-width:550px; max-height:90vh; overflow-y:auto; }
+select, button { background-color:#f8bbd0; border:none; border-radius:12px; padding:8px 14px; margin:8px; font-size:1em; color:#4a004a; cursor:pointer; transition:.2s; font-weight:600; }
+select:hover, button:hover { background-color:#f48fb1; transform:scale(1.03); }
+.text { background-color:#fff0f5; border-radius:10px; padding:14px; margin-bottom:12px; font-size:1.05em; text-align:left; line-height:1.45; }
+.question { font-size:1.15em; margin:12px 0 8px; color:#6a1b9a; font-weight:600; }
+.answers { display:flex; flex-direction:column; gap:8px; margin-bottom:8px; }
+.answer-btn { background-color:#fce4ec; border:2px solid #f48fb1; border-radius:10px; padding:8px; color:#6a1b9a; font-weight:bold; cursor:pointer; transition:.15s; text-align:left; }
+.answer-btn:hover { background-color:#f48fb1; color:white; }
+.correct { background-color:#b2ffb2 !important; color:#004d00 !important; }
+.wrong { background-color:#ff9999 !important; color:#4a0000 !important; }
+.result { margin-top:10px; font-weight:bold; color:#880e4f; min-height:1.2em; }
 </style>
 </head>
 <body>
 <h1>💖 Csajos Gyakorló 💖</h1>
 <div class="container">
-  <label for="subject">Tantárgy:</label>
-  <select id="subject">
-    <option value="math">Matek</option>
-    <option value="reading">Szövegértés</option>
-  </select>
-  <div id="math-options">
-    <label for="mode">Művelet:</label>
-    <select id="mode">
-      <option value="multiply">Szorzás</option>
-      <option value="divide">Osztás</option>
-    </select>
-    <label for="difficulty">Nehézség:</label>
-    <select id="difficulty">
-      <option value="easy">Könnyű</option>
-      <option value="hard">Nehéz</option>
-    </select>
-  </div>
-  <button id="newBtn">Új feladat 💫</button>
-  <div class="text" id="text"></div>
-  <div class="question" id="question"></div>
-  <div class="answers" id="answers"></div>
-  <div class="result" id="result"></div>
+<label for="subject">Tantárgy:</label>
+<select id="subject">
+<option value="math">Matek</option>
+<option value="reading">Szövegértés</option>
+</select>
+<div id="math-options">
+<label for="mode">Művelet:</label>
+<select id="mode">
+<option value="multiply">Szorzás</option>
+<option value="divide">Osztás</option>
+</select>
+<label for="difficulty">Nehézség:</label>
+<select id="difficulty">
+<option value="easy">Könnyű</option>
+<option value="hard">Nehéz</option>
+</select>
+</div>
+<button id="newBtn">Új feladat 💫</button>
+<div class="text" id="text"></div>
+<div class="question" id="question"></div>
+<div class="answers" id="answers"></div>
+<div class="result" id="result"></div>
 </div>
 
 <script>
-document.getElementById("subject").addEventListener("change", function() {
-  document.getElementById("math-options").style.display =
-    this.value === "math" ? "block" : "none";
+const subjectSelect = document.getElementById("subject");
+const mathOptions = document.getElementById("math-options");
+
+subjectSelect.addEventListener("change", function() {
+  if(this.value==="math") mathOptions.style.display="block";
+  else mathOptions.style.display="none";
   resetDisplay();
 });
 
 function resetDisplay() {
-  document.getElementById("text").textContent = "";
-  document.getElementById("question").textContent = "";
-  document.getElementById("answers").innerHTML = "";
-  document.getElementById("result").textContent = "";
+  document.getElementById("text").textContent="";
+  document.getElementById("question").textContent="";
+  document.getElementById("answers").innerHTML="";
+  document.getElementById("result").textContent="";
 }
 
-function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function randomInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
 
 document.getElementById("newBtn").addEventListener("click", function() {
-  const subject = document.getElementById('subject').value;
-  if(subject === 'math') newMathQuestion();
+  const subject = subjectSelect.value;
+  if(subject==="math") newMathQuestion();
   else newReadingTask();
 });
 
-// === MATEK ===
-function newMathQuestion() {
-  const mode = document.getElementById('mode').value;
-  const difficulty = document.getElementById('difficulty').value;
-  const qDiv = document.getElementById('question');
-  const aDiv = document.getElementById('answers');
-  const rDiv = document.getElementById('result');
-  const tDiv = document.getElementById('text');
-  tDiv.textContent = "";
-  rDiv.textContent = "";
-  aDiv.innerHTML = "";
-
-  let a,b,correct,txt;
-  if(mode==='multiply'){
-    do { a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100); } while(a*b>100);
-    correct=a*b; txt=`${a} × ${b} = ?`;
-  } else {
-    a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);
-    while(a*b>100){ a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100); }
-    correct=a; txt=`${a*b} ÷ ${b} = ?`;
-  }
-
-  qDiv.textContent = txt;
-  const answers = new Set([correct]);
-  while(answers.size < 3){ let w=randomInt(0,100); if(w!==correct) answers.add(w); }
-  Array.from(answers).sort(()=>Math.random()-0.5).forEach(ans=>{
-    const btn=document.createElement("button"); btn.className="answer-btn"; btn.textContent=ans;
-    btn.onclick=()=>{
-      if(ans===correct){ btn.classList.add("correct"); rDiv.textContent="✨ Helyes válasz! 💖"; }
-      else{ btn.classList.add("wrong"); rDiv.textContent="❌ Próbáld újra! 💕"; }
-      Array.from(aDiv.children).forEach(b=>b.disabled=true);
-    };
-    aDiv.appendChild(btn);
-  });
+// ===== MATEK =====
+function newMathQuestion(){
+const mode=document.getElementById('mode').value;
+const difficulty=document.getElementById('difficulty').value;
+const qDiv=document.getElementById('question');
+const aDiv=document.getElementById('answers');
+const rDiv=document.getElementById('result');
+document.getElementById('text').textContent="";
+rDiv.textContent=""; aDiv.innerHTML="";
+let a,b,correct,txt;
+if(mode==='multiply'){
+do{a=randomInt(1,100);b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);}while(a*b>100);
+correct=a*b; txt=`${a} × ${b} = ?`;
+}else{
+a=randomInt(1,100);b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);
+while(a*b>100){a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);}
+correct=a; txt=`${a*b} ÷ ${b} = ?`;
+}
+qDiv.textContent=txt;
+const answers=new Set([correct]);
+while(answers.size<3){let w=randomInt(0,100); if(w!==correct) answers.add(w);}
+Array.from(answers).sort(()=>Math.random()-0.5).forEach(ans=>{
+const btn=document.createElement("button"); btn.className="answer-btn"; btn.textContent=ans;
+btn.onclick=()=>{
+if(ans===correct){btn.classList.add("correct"); rDiv.textContent="✨ Helyes válasz! 💖";}
+else{btn.classList.add("wrong"); rDiv.textContent="❌ Próbáld újra! 💕";}
+Array.from(aDiv.children).forEach(b=>b.disabled=true);
+};
+aDiv.appendChild(btn);
+});
 }
 
-// === SZÖVEGÉRTÉS ===
-const stories = [
-{
-text: "Anna reggel felkelt, megette a reggelijét, majd felöltözött. Anyukája segített a táskáját elkészíteni. Elindult az iskolába a barátnőjével. Útközben megláttak egy kismadarat a fűben. Az iskolában vidáman üdvözölték a tanító nénit. A tanóra nagyon érdekes volt, mindenki figyelt. Délben együtt ebédeltek az osztálytársakkal a menzán. Ebéd után a kertben játszottak, labdáztak és nevettek. Az órák után hazafelé sétáltak, közben beszélgettek az új könyvekről. Végül Anna hazaért, megosztotta anyukájával a nap élményeit, majd elkészült a házi feladattal.",
+// ===== SZÖVEGÉRTÉS =====
+const story={
+text:"Anna reggel felkelt, megette a reggelijét, majd felöltözött. Anyukája segített a táskáját elkészíteni. Elindult az iskolába a barátnőjével. Útközben megláttak egy kismadarat a fűben. Az iskolában vidáman üdvözölték a tanító nénit. A tanóra nagyon érdekes volt, mindenki figyelt. Délben együtt ebédeltek az osztálytársakkal a menzán. Ebéd után a kertben játszottak, labdáztak és nevettek. Az órák után hazafelé sétáltak, közben beszélgettek az új könyvekről. Végül Anna hazaért, megosztotta anyukájával a nap élményeit, majd elkészült a házi feladattal.",
 questions:[
-{q:"Mit csinált Anna reggel?", a:["Aludt","Felöltözött és reggelizett","Kedvenc meséjét nézte"], correct:1},
-{q:"Kivel ment az iskolába?", a:["Egyedül","A barátnőjével","A testvérével"], correct:1},
-{q:"Mit láttak útközben?", a:["Egy kismadarat","Egy kutyát","Egy cicát"], correct:0},
-{q:"Hogyan üdvözölte Anna a tanító nénit?", a:["Vidáman","Szomorúan","Dühösen"], correct:0},
-{q:"Hol játszottak ebéd után?", a:["Teremben","Kertben","Folyosón"], correct:1},
-{q:"Miről beszélgettek hazafelé?", a:["Új könyvekről","Időjárásról","Ételről"], correct:0},
-{q:"Mit csinált Anna este?", a:["Mesét nézett","Házi feladatot készített","Aludt"], correct:1}
-]},
+{q:"Mit csinált Anna reggel?",a:["Aludt","Felöltözött és reggelizett","Kedvenc meséjét nézte"],correct:1},
+{q:"Kivel ment az iskolába?",a:["Egyedül","A barátnőjével","A testvérével"],correct:1},
+{q:"Mit láttak útközben?",a:["Egy kismadarat","Egy kutyát","Egy cicát"],correct:0},
+{q:"Hogyan üdvözölte Anna a tanító nénit?",a:["Vidáman","Szomorúan","Dühösen"],correct:0},
+{q:"Hol játszottak ebéd után?",a:["Teremben","Kertben","Folyosón"],correct:1},
+{q:"Miről beszélgettek hazafelé?",a:["Új könyvekről","Időjárásról","Ételről"],correct:0},
+{q:"Mit csinált Anna este?",a:["Mesét nézett","Házi feladatot készített","Aludt"],correct:1}
+]};
 {
 text:"Peti és a családja kirándulni mentek a hegyekbe. Reggel korán indultak, hogy elérjék a kilátót. Útközben láttak szarvasokat és mókusokat is. A patak mellett megpihentek és szendvicset ettek. A gyerekek játszottak a réten és virágokat gyűjtöttek. A nap folyamán sok képet készítettek a szülők. Ebéd után felfedezték a közeli erdőt. Peti a fák között bújócskázott a testvérével. Visszafelé a buszon mindenki elmesélte a nap legviccesebb pillanatait. Hazaérve a szülők elmondták, hogy büszkék voltak a gyerekekre. Este együtt vacsoráztak, és a képeket megnézték a nappaliban. Végül mindenki boldogan tért nyugovóra. A gyerekek izgatottan várták a következő kirándulást.", questions:[
 {q:"Hová mentek kirándulni?", a:["Tengerhez","Hegybe","Városba"], correct:1},
@@ -268,41 +185,30 @@ questions:[
 // Ide jönne a további 5 történet (összesen 7) ugyanilyen formátumban...
 ];
 
-function newReadingTask() {
-  const story = stories[randomInt(0, stories.length-1)];
-  const tDiv = document.getElementById('text');
-  const qDiv = document.getElementById('question');
-  const aDiv = document.getElementById('answers');
-  const rDiv = document.getElementById('result');
-
-  tDiv.textContent = story.text;
-  qDiv.textContent="";
-  aDiv.innerHTML="";
-  rDiv.textContent="";
-
-  let current=0;
-  function showQuestion() {
-    const q=story.questions[current];
-    qDiv.textContent=q.q;
-    aDiv.innerHTML="";
-    q.a.forEach((ans,i)=>{
-      const btn=document.createElement("button");
-      btn.className="answer-btn";
-      btn.textContent=ans;
-      btn.onclick=()=>{
-        if(i===q.correct){btn.classList.add("correct"); rDiv.textContent="🌸 Ügyes vagy!";}
-        else{btn.classList.add("wrong"); rDiv.textContent="❌ Próbáld újra!";}
-        Array.from(aDiv.children).forEach(b=>b.disabled=true);
-        setTimeout(()=>{
-          current++;
-          if(current<story.questions.length) { rDiv.textContent=""; showQuestion(); }
-          else { qDiv.textContent="🎉 Minden kérdésre válaszoltál!"; aDiv.innerHTML=""; rDiv.textContent="Nagyon ügyes voltál! 💖"; }
-        },1000);
-      };
-      aDiv.appendChild(btn);
-    });
-  }
-  showQuestion();
+function newReadingTask(){
+const tDiv=document.getElementById('text');
+const qDiv=document.getElementById('question');
+const aDiv=document.getElementById('answers');
+const rDiv=document.getElementById('result');
+tDiv.textContent=story.text; qDiv.textContent=""; aDiv.innerHTML=""; rDiv.textContent="";
+let current=0;
+function showQuestion(){
+const q=story.questions[current];
+qDiv.textContent=q.q; aDiv.innerHTML="";
+q.a.forEach((ans,i)=>{
+const btn=document.createElement("button");
+btn.className="answer-btn"; btn.textContent=ans;
+btn.onclick=()=>{
+if(i===q.correct){btn.classList.add("correct"); rDiv.textContent="🌸 Ügyes vagy!";}
+else{btn.classList.add("wrong"); rDiv.textContent="❌ Próbáld újra!";}
+Array.from(aDiv.children).forEach(b=>b.disabled=true);
+setTimeout(()=>{current++; if(current<story.questions.length){showQuestion();}
+else{qDiv.textContent="🎉 Kész! Jó munka!"; aDiv.innerHTML=""; rDiv.textContent="";}},700);
+};
+aDiv.appendChild(btn);
+});
+}
+showQuestion();
 }
 </script>
 </body>
