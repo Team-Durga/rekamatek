@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Csajos Matek Gyakorló 💕</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', cursive;
+    background: linear-gradient(135deg, #ffe6f0, #ffccff);
+    color: #ff1493;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  h1 {
+    color: #e91e63;
+    text-shadow: 2px 2px #fff;
+  }
+
+  .container {
+    background: #fff0f6;
+    border: 3px solid #ff80bf;
+    border-radius: 20px;
+    padding: 25px 40px;
+    box-shadow: 0 0 15px #ffb6c1;
+    text-align: center;
+    max-width: 350px;
+  }
+
+  select, button {
+    background-color: #ffb6c1;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 1em;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  select:hover, button:hover {
+    background-color: #ff80aa;
+    transform: scale(1.05);
+  }
+
+  .question {
+    font-size: 1.5em;
+    margin: 15px 0;
+  }
+
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .answer-btn {
+    background-color: #ffcce5;
+    border: 2px solid #ff99cc;
+    border-radius: 12px;
+    padding: 10px;
+    color: #e91e63;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .answer-btn:hover {
+    background-color: #ff99cc;
+    color: white;
+  }
+
+  .correct {
+    background-color: #b2ffb2 !important;
+  }
+
+  .wrong {
+    background-color: #ff9999 !important;
+  }
+
+  .result {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <h1>💖 Csajos Matek Gyakorló 💖</h1>
+  <div class="container">
+    <label for="mode">Művelet:</label>
+    <select id="mode">
+      <option value="multiply">Szorzás</option>
+      <option value="divide">Osztás</option>
+    </select>
+
+    <label for="difficulty">Nehézség:</label>
+    <select id="difficulty">
+      <option value="easy">Könnyű</option>
+      <option value="hard">Nehéz</option>
+    </select>
+
+    <button onclick="newQuestion()">Új feladat 💫</button>
+
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+<script>
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function newQuestion() {
+  const mode = document.getElementById('mode').value;
+  const difficulty = document.getElementById('difficulty').value;
+  const questionDiv = document.getElementById('question');
+  const answersDiv = document.getElementById('answers');
+  const resultDiv = document.getElementById('result');
+  resultDiv.textContent = "";
+  answersDiv.innerHTML = "";
+
+  let a = randomInt(1, 100);
+  let b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
+  let correctAnswer, questionText;
+
+  if (mode === 'multiply') {
+    correctAnswer = a * b;
+    questionText = `${a} × ${b} = ?`;
+  } else {
+    correctAnswer = a;
+    let result = a * b;
+    questionText = `${result} ÷ ${b} = ?`;
+  }
+
+  questionDiv.textContent = questionText;
+
+  // Randomize answers
+  const answers = new Set();
+  answers.add(correctAnswer);
+  while (answers.size < 3) {
+    let wrong = correctAnswer + randomInt(-10, 10);
+    if (wrong < 0) wrong = 0;
+    answers.add(wrong);
+  }
+
+  const shuffled = Array.from(answers).sort(() => Math.random() - 0.5);
+
+  shuffled.forEach(ans => {
+    const btn = document.createElement('button');
+    btn.className = "answer-btn";
+    btn.textContent = ans;
+    btn.onclick = () => {
+      if (ans === correctAnswer) {
+        btn.classList.add("correct");
+        resultDiv.textContent = "✨ Helyes válasz, ügyes vagy! 💖";
+      } else {
+        btn.classList.add("wrong");
+        resultDiv.textContent = "❌ Sajnos nem, próbáld újra! 💕";
+      }
+      // Disable all buttons after selection
+      Array.from(answersDiv.children).forEach(b => b.disabled = true);
+    };
+    answersDiv.appendChild(btn);
+  });
+}
+</script>
+</body>
+</html>
