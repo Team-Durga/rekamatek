@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Csajos Matek Gyakorló 💕</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
   body {
-    font-family: 'Comic Sans MS', cursive;
+    font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ffe6f0, #ffccff);
-    color: #ff1493;
+    color: #c2185b;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,40 +20,44 @@
   }
 
   h1 {
-    color: #e91e63;
-    text-shadow: 2px 2px #fff;
+    color: #ad1457;
+    text-shadow: 1px 1px #fff;
+    font-weight: 600;
   }
 
   .container {
-    background: #fff0f6;
-    border: 3px solid #ff80bf;
+    background: #fff9fc;
+    border: 3px solid #f48fb1;
     border-radius: 20px;
     padding: 25px 40px;
-    box-shadow: 0 0 15px #ffb6c1;
+    box-shadow: 0 0 15px #ffc1e3;
     text-align: center;
-    max-width: 350px;
+    max-width: 360px;
   }
 
   select, button {
-    background-color: #ffb6c1;
+    background-color: #f8bbd0;
     border: none;
     border-radius: 15px;
     padding: 10px 20px;
     margin: 10px;
     font-size: 1em;
-    color: white;
+    color: #4a004a;
     cursor: pointer;
     transition: 0.3s;
+    font-weight: 600;
   }
 
   select:hover, button:hover {
-    background-color: #ff80aa;
+    background-color: #f48fb1;
     transform: scale(1.05);
   }
 
   .question {
-    font-size: 1.5em;
+    font-size: 1.6em;
     margin: 15px 0;
+    color: #6a1b9a;
+    font-weight: 600;
   }
 
   .answers {
@@ -61,32 +67,35 @@
   }
 
   .answer-btn {
-    background-color: #ffcce5;
-    border: 2px solid #ff99cc;
+    background-color: #fce4ec;
+    border: 2px solid #f48fb1;
     border-radius: 12px;
     padding: 10px;
-    color: #e91e63;
+    color: #6a1b9a;
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
   }
 
   .answer-btn:hover {
-    background-color: #ff99cc;
+    background-color: #f48fb1;
     color: white;
   }
 
   .correct {
     background-color: #b2ffb2 !important;
+    color: #004d00 !important;
   }
 
   .wrong {
     background-color: #ff9999 !important;
+    color: #4a0000 !important;
   }
 
   .result {
     margin-top: 10px;
     font-weight: bold;
+    color: #880e4f;
   }
 </style>
 </head>
@@ -141,7 +150,7 @@ function newQuestion() {
 
   questionDiv.textContent = questionText;
 
-  // Randomize answers
+  // Random válaszok generálása
   const answers = new Set();
   answers.add(correctAnswer);
   while (answers.size < 3) {
@@ -164,7 +173,6 @@ function newQuestion() {
         btn.classList.add("wrong");
         resultDiv.textContent = "❌ Sajnos nem, próbáld újra! 💕";
       }
-      // Disable all buttons after selection
       Array.from(answersDiv.children).forEach(b => b.disabled = true);
     };
     answersDiv.appendChild(btn);
