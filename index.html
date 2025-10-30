@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Csajos Matek Gyakorló 💕</title>
+<title>Csajos Gyakorló 💕</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
   body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ffe6f0, #ffccff);
@@ -14,179 +13,296 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: flex-start;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px 0;
   }
-
   h1 {
     color: #ad1457;
     text-shadow: 1px 1px #fff;
     font-weight: 600;
   }
-
   .container {
     background: #fff9fc;
     border: 3px solid #f48fb1;
     border-radius: 20px;
-    padding: 25px 40px;
+    padding: 20px 30px;
     box-shadow: 0 0 15px #ffc1e3;
     text-align: center;
-    max-width: 360px;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
   }
-
   select, button {
     background-color: #f8bbd0;
     border: none;
-    border-radius: 15px;
-    padding: 10px 20px;
-    margin: 10px;
+    border-radius: 12px;
+    padding: 8px 14px;
+    margin: 8px;
     font-size: 1em;
     color: #4a004a;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
     font-weight: 600;
   }
-
   select:hover, button:hover {
     background-color: #f48fb1;
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
-
+  .text {
+    background-color: #fff0f5;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 1.05em;
+    text-align: left;
+    line-height: 1.45;
+  }
   .question {
-    font-size: 1.6em;
-    margin: 15px 0;
+    font-size: 1.15em;
+    margin: 12px 0 8px;
     color: #6a1b9a;
     font-weight: 600;
   }
-
   .answers {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
-
   .answer-btn {
     background-color: #fce4ec;
     border: 2px solid #f48fb1;
-    border-radius: 12px;
-    padding: 10px;
+    border-radius: 10px;
+    padding: 8px;
     color: #6a1b9a;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.15s;
+    text-align: left;
   }
-
   .answer-btn:hover {
     background-color: #f48fb1;
     color: white;
   }
-
   .correct {
     background-color: #b2ffb2 !important;
     color: #004d00 !important;
   }
-
   .wrong {
     background-color: #ff9999 !important;
     color: #4a0000 !important;
   }
-
   .result {
     margin-top: 10px;
     font-weight: bold;
     color: #880e4f;
+    min-height: 1.2em;
   }
 </style>
 </head>
 <body>
-  <h1>💖 Csajos Matek Gyakorló 💖</h1>
-  <div class="container">
+<h1>💖 Csajos Gyakorló 💖</h1>
+<div class="container">
+  <label for="subject">Tantárgy:</label>
+  <select id="subject">
+    <option value="math">Matek</option>
+    <option value="reading">Szövegértés</option>
+  </select>
+  <div id="math-options">
     <label for="mode">Művelet:</label>
     <select id="mode">
       <option value="multiply">Szorzás</option>
       <option value="divide">Osztás</option>
     </select>
-
     <label for="difficulty">Nehézség:</label>
     <select id="difficulty">
       <option value="easy">Könnyű</option>
       <option value="hard">Nehéz</option>
     </select>
-
-    <button onclick="newQuestion()">Új feladat 💫</button>
-
-    <div class="question" id="question"></div>
-    <div class="answers" id="answers"></div>
-    <div class="result" id="result"></div>
   </div>
+  <button id="newBtn">Új feladat 💫</button>
+  <div class="text" id="text"></div>
+  <div class="question" id="question"></div>
+  <div class="answers" id="answers"></div>
+  <div class="result" id="result"></div>
+</div>
 
 <script>
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+document.getElementById("subject").addEventListener("change", function() {
+  document.getElementById("math-options").style.display =
+    this.value === "math" ? "block" : "none";
+  resetDisplay();
+});
+
+function resetDisplay() {
+  document.getElementById("text").textContent = "";
+  document.getElementById("question").textContent = "";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("result").textContent = "";
 }
 
-function newQuestion() {
+function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+document.getElementById("newBtn").addEventListener("click", function() {
+  const subject = document.getElementById('subject').value;
+  if(subject === 'math') newMathQuestion();
+  else newReadingTask();
+});
+
+// === MATEK ===
+function newMathQuestion() {
   const mode = document.getElementById('mode').value;
   const difficulty = document.getElementById('difficulty').value;
-  const questionDiv = document.getElementById('question');
-  const answersDiv = document.getElementById('answers');
-  const resultDiv = document.getElementById('result');
-  resultDiv.textContent = "";
-  answersDiv.innerHTML = "";
+  const qDiv = document.getElementById('question');
+  const aDiv = document.getElementById('answers');
+  const rDiv = document.getElementById('result');
+  const tDiv = document.getElementById('text');
+  tDiv.textContent = "";
+  rDiv.textContent = "";
+  aDiv.innerHTML = "";
 
-  let a, b, correctAnswer, questionText;
-
-  if (mode === 'multiply') {
-    // Szorzás – generálás addig, amíg az eredmény nem nagyobb mint 100
-    do {
-      a = randomInt(1, 100);
-      b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
-    } while (a * b > 100);
-    correctAnswer = a * b;
-    questionText = `${a} × ${b} = ?`;
-
+  let a,b,correct,txt;
+  if(mode==='multiply'){
+    do { a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100); } while(a*b>100);
+    correct=a*b; txt=`${a} × ${b} = ?`;
   } else {
-    // Osztás – eredmény és osztó generálása, majd szorzat kiszámítása
-    a = randomInt(1, 100);
-    b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
-    while (a * b > 100) {
-      a = randomInt(1, 100);
-      b = (difficulty === 'easy') ? randomInt(1, 10) : randomInt(1, 100);
-    }
-    correctAnswer = a;
-    let result = a * b;
-    questionText = `${result} ÷ ${b} = ?`;
+    a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100);
+    while(a*b>100){ a=randomInt(1,100); b=(difficulty==='easy')?randomInt(1,10):randomInt(1,100); }
+    correct=a; txt=`${a*b} ÷ ${b} = ?`;
   }
 
-  questionDiv.textContent = questionText;
-
-  // Válaszlehetőségek – mindig 0–100 között
-  const answers = new Set();
-  answers.add(correctAnswer);
-  while (answers.size < 3) {
-    let wrong = randomInt(0, 100);
-    if (wrong !== correctAnswer) answers.add(wrong);
-  }
-
-  const shuffled = Array.from(answers).sort(() => Math.random() - 0.5);
-
-  shuffled.forEach(ans => {
-    const btn = document.createElement('button');
-    btn.className = "answer-btn";
-    btn.textContent = ans;
-    btn.onclick = () => {
-      if (ans === correctAnswer) {
-        btn.classList.add("correct");
-        resultDiv.textContent = "✨ Helyes válasz, ügyes vagy! 💖";
-      } else {
-        btn.classList.add("wrong");
-        resultDiv.textContent = "❌ Sajnos nem, próbáld újra! 💕";
-      }
-      Array.from(answersDiv.children).forEach(b => b.disabled = true);
+  qDiv.textContent = txt;
+  const answers = new Set([correct]);
+  while(answers.size < 3){ let w=randomInt(0,100); if(w!==correct) answers.add(w); }
+  Array.from(answers).sort(()=>Math.random()-0.5).forEach(ans=>{
+    const btn=document.createElement("button"); btn.className="answer-btn"; btn.textContent=ans;
+    btn.onclick=()=>{
+      if(ans===correct){ btn.classList.add("correct"); rDiv.textContent="✨ Helyes válasz! 💖"; }
+      else{ btn.classList.add("wrong"); rDiv.textContent="❌ Próbáld újra! 💕"; }
+      Array.from(aDiv.children).forEach(b=>b.disabled=true);
     };
-    answersDiv.appendChild(btn);
+    aDiv.appendChild(btn);
   });
+}
+
+// === SZÖVEGÉRTÉS ===
+const stories = [
+{
+text: "Anna reggel felkelt, megette a reggelijét, majd felöltözött. Anyukája segített a táskáját elkészíteni. Elindult az iskolába a barátnőjével. Útközben megláttak egy kismadarat a fűben. Az iskolában vidáman üdvözölték a tanító nénit. A tanóra nagyon érdekes volt, mindenki figyelt. Délben együtt ebédeltek az osztálytársakkal a menzán. Ebéd után a kertben játszottak, labdáztak és nevettek. Az órák után hazafelé sétáltak, közben beszélgettek az új könyvekről. Végül Anna hazaért, megosztotta anyukájával a nap élményeit, majd elkészült a házi feladattal.",
+questions:[
+{q:"Mit csinált Anna reggel?", a:["Aludt","Felöltözött és reggelizett","Kedvenc meséjét nézte"], correct:1},
+{q:"Kivel ment az iskolába?", a:["Egyedül","A barátnőjével","A testvérével"], correct:1},
+{q:"Mit láttak útközben?", a:["Egy kismadarat","Egy kutyát","Egy cicát"], correct:0},
+{q:"Hogyan üdvözölte Anna a tanító nénit?", a:["Vidáman","Szomorúan","Dühösen"], correct:0},
+{q:"Hol játszottak ebéd után?", a:["Teremben","Kertben","Folyosón"], correct:1},
+{q:"Miről beszélgettek hazafelé?", a:["Új könyvekről","Időjárásról","Ételről"], correct:0},
+{q:"Mit csinált Anna este?", a:["Mesét nézett","Házi feladatot készített","Aludt"], correct:1}
+]},
+{
+text:"Peti és a családja kirándulni mentek a hegyekbe. Reggel korán indultak, hogy elérjék a kilátót. Útközben láttak szarvasokat és mókusokat is. A patak mellett megpihentek és szendvicset ettek. A gyerekek játszottak a réten és virágokat gyűjtöttek. A nap folyamán sok képet készítettek a szülők. Ebéd után felfedezték a közeli erdőt. Peti a fák között bújócskázott a testvérével. Visszafelé a buszon mindenki elmesélte a nap legviccesebb pillanatait. Hazaérve a szülők elmondták, hogy büszkék voltak a gyerekekre. Este együtt vacsoráztak, és a képeket megnézték a nappaliban. Végül mindenki boldogan tért nyugovóra. A gyerekek izgatottan várták a következő kirándulást.", questions:[
+{q:"Hová mentek kirándulni?", a:["Tengerhez","Hegybe","Városba"], correct:1},
+{q:"Mit láttak útközben?", a:["Szarvasokat és mókusokat","Csak kutyákat","Semmit"], correct:0},
+{q:"Mit ettek a patak mellett?", a:["Szendvicset","Süteményt","Gyümölcsöt"], correct:0},
+{q:"Hol játszottak a gyerekek?", a:["Réten","Házban","Iskolában"], correct:0},
+{q:"Mit csinált Peti az erdőben?", a:["Bújócskázott","Futott","Aludt"], correct:0},
+{q:"Mit néztek este a családtagok?", a:["Képeket","Mesét","TV-t"], correct:0},
+{q:"Milyen volt a nap végén mindenki hangulata?", a:["Boldog","Szomorú","Dühös"], correct:0}
+]},
+{
+text:"Márti és a kiscicája, Cirmi, a kertben játszottak. Cirmi szeretett futkározni és felmászni a fára. Márti labdát gurított neki, és Cirmi mindig visszahozta. Egyszer egy pillangót követett a macska, és Márti nevette. Délután a nagymama is kijött a kertbe, és együtt etették a madarakat. Cirmi kíváncsian figyelte a galambokat. Márti rajzolt egy képet a cicáról, ahogy a virágok között fut. Este Márti megetette Cirmit, és a szobában játszottak tovább. A család vacsorája után mindenki leült a kanapéra mesét olvasni. Cirmi az ölében aludt el, Márti pedig boldogan simogatta. Végül Márti elrakta a játékokat, és lefeküdt aludni.", 
+questions:[
+{q:"Kivel játszott Márti a kertben?", a:["A barátjával","A kiscicájával","A testvérével"], correct:1},
+{q:"Mit szeretett Cirmi csinálni?", a:["Olvasni","Futkározni és fára mászni","Aludni a kanapén"], correct:1},
+{q:"Mit követett egyszer Cirmi?", a:["Egy pillangót","Egy kutyát","Egy labdát"], correct:0},
+{q:"Ki jött délután a kertbe?", a:["Nagymama","Tanárnő","Barát"], correct:0},
+{q:"Mit csinált Márti a cicával kapcsolatosan?", a:["Rajzolt egy képet","Főzött","Aludt"], correct:0},
+{q:"Hol aludt Cirmi este?", a:["Az ágyban","Az ölében","A kertben"], correct:1},
+{q:"Mit csinált Márti este?", a:["Elrakta a játékokat","Elment sétálni","Mesét olvasott"], correct:0]
+},
+{
+text:"Dani és Lili a parkban találtak egy titkos ösvényt. Az ösvényen kis fahidak vezettek egy tóhoz. A tó partján rengeteg virág nyílt, és pillangók repkedtek körülöttük. Dani és Lili leültek a fűbe, és elhatározták, hogy naplót írnak a felfedezésről. Találtak egy kicsi házikót, ami elhagyatottnak tűnt, de nagyon aranyos volt. Körbejárták a házikót, és megfigyelték a kis ablakokat. Délután a napocska sütött, és madarak csicseregtek. Hazafelé menet meséltek a szüleiknek a kalandról. Este a naplót közösen rajzokkal díszítették. Dani boldogan mesélte, milyen volt az ösvény, Lili pedig a virágokat rajzolta. Mielőtt aludni mentek, megtervezték a következő felfedezést.", 
+questions:[
+{q:"Hol találták a titkos ösvényt?", a:["Iskolában","Parkban","Boltban"], correct:1},
+{q:"Hová vezetett az ösvény?", a:["Egy játszótérre","Egy tóhoz","Egy házhoz"], correct:1},
+{q:"Mit csináltak a tó partján?", a:["Futottak","Leültek és naplót írtak","Aludtak"], correct:1},
+{q:"Mit találtak az ösvényen?", a:["Egy kicsi házikót","Egy autót","Egy kincset"], correct:0},
+{q:"Mi díszítette a naplót?", a:["Rajzok","Színes ceruzák","Semmi"], correct:0},
+{q:"Ki rajzolta a virágokat?", a:["Dani","Lili","Tanárnő"], correct:1},
+{q:"Mit terveztek este?", a:["Következő felfedezést","Vacsorát","Kirándulást a nagymamával"], correct:0]
+},
+{
+text:"Egy kis tündér, Pici, a varázserdőben élt. Minden reggel felkelt és a patakhoz ment inni. A patak partján színes virágok nyíltak, és a pillangók táncoltak a levegőben. Pici imádott repülni a fák között, és új barátokat találni. Egyszer találkozott egy mókussal, aki elvesztette a mogyoróját. Pici segített neki megtalálni. A tündér gyakran gyűjtött csillogó köveket az ösvény mentén. Délután a varázserdőben a fák susogtak, és a madarak énekeltek. Este Pici hazarepült a kis kunyhójába, ahol fáklyák világították meg az útját. Lefekvés előtt a tündér átgondolta a nap kalandjait és boldogan aludt el. Másnap új kalandokat tervezett a barátaival.", 
+questions:[
+{q:"Hol élt Pici?", a:["Városban","Varázserdőben","Iskolában"], correct:1},
+{q:"Mit csinált reggel Pici?", a:["Aludt","A patakhoz ment inni","Játszott a barátokkal"], correct:1},
+{q:"Mit talált Pici a mókussal kapcsolatban?", a:["Mogyorót","Kulcsot","Labdát"], correct:0},
+{q:"Mit gyűjtött Pici gyakran?", a:["Csillogó köveket","Leveleket","Virágokat"], correct:0},
+{q:"Mikor susogtak a fák és énekeltek a madarak?", a:["Reggel","Délután","Este"], correct:1},
+{q:"Hová repült este Pici?", a:["Iskolába","Kunhójába","Fákra"], correct:1},
+{q:"Mit tervezett másnap Pici?", a:["Új kalandokat","Vásárlást","Tanulást"], correct:0]
+},
+{
+text:"Zsófi és a nagypapája a piacra mentek szombaton reggel. Ott friss gyümölcsöt és zöldséget vásároltak. Zsófi szerette a piacon a színes standokat és a finom illatokat. Megnézték a halas standot, ahol a nagypapa mesélt a különböző halakról. Zsófi kipróbálta az új fagyit, amit a nagypapa vett neki. Utána sétáltak a közeli parkban és etették a kacsákat. Délután hazamentek, és Zsófi segített anyukájának a vacsora elkészítésében. Este együtt nézték a családi fotókat, és Zsófi mesélt a nap élményeiről. A nagypapa büszkén hallgatta a történeteket. Lefekvés előtt Zsófi elpakolta a játékait és boldogan aludt el.", 
+questions:[
+{q:"Hová mentek Zsófiék?", a:["Piacra","Iskolába","Tengerhez"], correct:0},
+{q:"Mit vásároltak?", a:["Cipőt","Gyümölcsöt és zöldséget","Játékot"], correct:1},
+{q:"Mit szerette Zsófi a piacon?", a:["Standokat és illatokat","Csak az édességet","A színes ruhákat"], correct:0},
+{q:"Mit mesélt a nagypapa a halakról?", a:["Semmit","Különböző halakról","Csak a pontyokról"], correct:1},
+{q:"Mit csináltak a parkban?", a:["Etették a kacsákat","Futottak","Aludtak"], correct:0},
+{q:"Mit néztek este együtt?", a:["Mesét","Családi fotókat","Képregényt"], correct:1},
+{q:"Hogyan aludt el Zsófi?", a:["Boldogan","Szomorúan","Dühösen"], correct:0]
+},
+{
+text:"Bence és a robotja a garázsban dolgoztak. A robot Bence parancsait követte és segített az építkezésben. Bence terveket rajzolt a papírra, és a robot összeszerelte a kis részeket. Egyszer a robot megbotlott, de Bence nevetett rajta. A szomszéd kutyája végigugatta a munkát, ami nagyon vicces volt. Délután Bence és a robot a szerszámokat rendezték el. Bence kipróbálta az új programot, amit a robotba írt. Este a garázsban minden rendben volt, és a robot „pihent”. Bence mesélt a testvérének a napi kalandról. Lefekvés előtt elrakta a rajzokat és terveket. Másnap új ötleteket talált ki a robothoz, hogy még ügyesebb legyen. A szomszédok kíváncsian figyelték a robotot. Bence nagyon büszke volt a nap végén a munkára.", 
+questions:[
+{q:"Hol dolgoztak Bence és a robot?", a:["Konyhában","Garázsban","Iskolában"], correct:1},
+{q:"Mit csinált a robot?", a:["Összeszerelte a kis részeket","Főzött","Aludt"], correct:0},
+{q:"Mi történt, amikor a robot megbotlott?", a:["Bence sírt","Bence nevetett","Bence mérges lett"], correct:1},
+{q:"Mi zavarta a munkát?", a:["Eső","Szomszéd kutya","Kedvenc labda"], correct:1},
+{q:"Mit próbált ki Bence délután?", a:["Új programot","Új játékot","Új könyvet"], correct:0},
+{q:"Mit csinált este a robot?", a:["Pihent","Futott","Játszott"], correct:0},
+{q:"Mit csinált Bence másnap?", a:["Új ötleteket talált ki","Aludt","Sütött"], correct:0]
+}
+// Ide jönne a további 5 történet (összesen 7) ugyanilyen formátumban...
+];
+
+function newReadingTask() {
+  const story = stories[randomInt(0, stories.length-1)];
+  const tDiv = document.getElementById('text');
+  const qDiv = document.getElementById('question');
+  const aDiv = document.getElementById('answers');
+  const rDiv = document.getElementById('result');
+
+  tDiv.textContent = story.text;
+  qDiv.textContent="";
+  aDiv.innerHTML="";
+  rDiv.textContent="";
+
+  let current=0;
+  function showQuestion() {
+    const q=story.questions[current];
+    qDiv.textContent=q.q;
+    aDiv.innerHTML="";
+    q.a.forEach((ans,i)=>{
+      const btn=document.createElement("button");
+      btn.className="answer-btn";
+      btn.textContent=ans;
+      btn.onclick=()=>{
+        if(i===q.correct){btn.classList.add("correct"); rDiv.textContent="🌸 Ügyes vagy!";}
+        else{btn.classList.add("wrong"); rDiv.textContent="❌ Próbáld újra!";}
+        Array.from(aDiv.children).forEach(b=>b.disabled=true);
+        setTimeout(()=>{
+          current++;
+          if(current<story.questions.length) { rDiv.textContent=""; showQuestion(); }
+          else { qDiv.textContent="🎉 Minden kérdésre válaszoltál!"; aDiv.innerHTML=""; rDiv.textContent="Nagyon ügyes voltál! 💖"; }
+        },1000);
+      };
+      aDiv.appendChild(btn);
+    });
+  }
+  showQuestion();
 }
 </script>
 </body>
