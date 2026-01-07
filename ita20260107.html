@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hálózati Biztonság Kvíz v2.0</title>
+    <title>Hálózati Biztonság Master Quiz</title>
     <style>
         :root {
             --bg-color: #050508;
@@ -35,7 +35,7 @@
         }
 
         .quiz-container {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
         }
 
@@ -45,23 +45,22 @@
             margin-bottom: 20px;
             padding: 20px;
             border-radius: 4px;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        /* Hiba jelzése */
         .question-card.error {
             border: 2px solid var(--wrong);
-            box-shadow: 0 0 15px rgba(255, 49, 49, 0.3);
+            box-shadow: 0 0 15px rgba(255, 49, 49, 0.4);
         }
 
         .correction-text {
             color: var(--correct);
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px;
             display: none;
             font-size: 0.9rem;
-            text-transform: uppercase;
+            border-top: 1px dashed #444;
+            padding-top: 10px;
         }
 
         .options {
@@ -74,8 +73,9 @@
             background: #222;
             border: 1px solid var(--accent-neon);
             color: var(--accent-neon);
-            padding: 8px 20px;
+            padding: 10px 25px;
             cursor: pointer;
+            font-weight: bold;
             transition: all 0.2s;
         }
 
@@ -93,49 +93,78 @@
         #result-area {
             text-align: center;
             margin-top: 40px;
-            padding-bottom: 50px;
+            padding: 40px;
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 850px;
+            border: 1px solid var(--accent-neon);
         }
 
         .check-btn {
             background: var(--accent-pink);
             color: white;
             border: none;
-            padding: 15px 50px;
-            font-size: 1.2rem;
+            padding: 20px 60px;
+            font-size: 1.4rem;
             cursor: pointer;
-            box-shadow: 0 0 15px var(--accent-pink);
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 20px var(--accent-pink);
         }
 
         .score-display {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-top: 20px;
             color: var(--accent-neon);
+            text-shadow: 0 0 10px var(--accent-neon);
         }
     </style>
 </head>
 <body>
 
-    <h1>SYSTEM_ANALYSIS // VER 2.0</h1>
+    <h1>NETWORK_SECURITY // FULL_DECRYPT</h1>
 
     <div class="quiz-container" id="quiz-container"></div>
 
     <div id="result-area">
-        <button class="check-btn" onclick="evaluateQuiz()">ANALÍZIS INDÍTÁSA</button>
+        <button class="check-btn" onclick="evaluateQuiz()">RENDSZER ANALÍZIS</button>
         <div id="final-score" class="score-display"></div>
     </div>
 
     <script>
         const questions = [
+            // Eredeti 10 kérdés
             { text: "A DSL-kapcsolatok normál telefonvonalakon működnek.", correct: true },
-            { text: "A vezeték nélküli hálózaton belül a hálózathoz csatlakoztatott számítógépek vezeték nélküli egységei és a vezeték nélküli alapegység rádióhullámok útján létesít egymással kapcsolatot.", correct: true },
-            { text: "SOHO környezetben a hozzáférési pontok általában körsugárzó ikerantennákat használnak, amelyek csak egy irányba sugározzák a jeleket.", correct: false },
-            { text: "Egy rosszul beállított Wi-Fi hálózat könnyen támadható és sérülékeny lesz az illetéktelen felhasználókkal szemben.", correct: true },
+            { text: "A vezeték nélküli hálózaton belül a hálózathoz csatlakoztatott számítógépek rádióhullámok útján kommunikálnak.", correct: true },
+            { text: "SOHO környezetben a hozzáférési pontok ikerantennái csak egy irányba sugároznak.", correct: false },
+            { text: "Egy rosszul beállított Wi-Fi hálózat könnyen támadható lesz.", correct: true },
             { text: "A WEP-et a WPA leváltása céljából fejlesztették ki.", correct: false },
             { text: "A WPA és a WPA2 ugyanazt a titkosítást használja.", correct: false },
-            { text: "A tűzfal (angolul firewall) célja a számítástechnikában annak biztosítása, hogy a hálózaton keresztül egy adott számítógépbe ne történhessen illetéktelen behatolás.", correct: true },
-            { text: "A személyes vagy vállalati hálózatok megbízhatatlan külső, és a megbízható belső része között elhelyezkedő terület a DMZ.", correct: true },
-            { text: "Az alkalmazás szintű tűzfalaknál az adatcsomagok egyszerű szűrése a cél-port, valamint forrás- és célcím, egy a tűzfal-adminisztrátor által már definiált szabályrendszer alapján történik.", correct: false },
-            { text: "A fejlett tűzfalak csendben dobják el a csomagokat, azaz az érintett kapcsolat egyszerűen nem jön létre/megszakad, de nincs konkrét visszajelzés.", correct: true }
+            { text: "A tűzfal célja megakadályozni az illetéktelen behatolást a hálózaton keresztül.", correct: true },
+            { text: "A DMZ a megbízhatatlan külső és a megbízható belső hálózat közötti terület.", correct: true },
+            { text: "Az alkalmazás szintű tűzfalak csak egyszerű port- és címszűrést végeznek.", correct: false },
+            { text: "A fejlett tűzfalak csendben is eldobhatják a csomagokat (drop).", correct: true },
+            
+            // 20 Új kérdés a dokumentumból
+            { text: "A hálózati biztonság csak a szoftveres védelemről szól.", correct: false },
+            { text: "Az illetéktelen hozzáférés megakadályozása a hálózati biztonság egyik alapkövetelménye.", correct: true },
+            { text: "A fizikai biztonság (pl. szerverszoba bezárása) nem része a hálózati biztonságnak.", correct: false },
+            { text: "A WEP titkosítás napjainkban is biztonságosnak tekinthető.", correct: false },
+            { text: "A WPA2 az AES titkosítási algoritmust használja a biztonság növelése érdekében.", correct: true },
+            { text: "A SSID elrejtése teljes védelmet nyújt a Wi-Fi hálózatnak.", correct: false },
+            { text: "A MAC-cím szűréssel meghatározható, mely eszközök csatlakozhatnak a hálózatra.", correct: true },
+            { text: "A tűzfal lehet szoftveres és hardveres kialakítású is.", correct: true },
+            { text: "A csomagszűrő tűzfal a hálózati forgalmat az adatok tartalma alapján vizsgálja.", correct: false },
+            { text: "Az alkalmazásszintű tűzfal (Proxy) képes vizsgálni az alkalmazási protokollokat (pl. HTTP).", correct: true },
+            { text: "A DMZ-be (demilitarizált zóna) jellemzően a nyilvános szolgáltatásokat (pl. webszerver) helyezzük.", correct: true },
+            { text: "A belső hálózat (Intranet) gépei a DMZ-n keresztül érhetőek el közvetlenül az internetről.", correct: false },
+            { text: "A hálózati forgalom titkosítása segít megelőzni az adatok lehallgatását.", correct: true },
+            { text: "A WPA3 titkosítás régebbi, mint a WEP.", correct: false },
+            { text: "A tűzfal szabályrendszere (ACL) határozza meg, hogy mely csomagok haladhatnak át.", correct: true },
+            { text: "A vírusirtó szoftver teljesen feleslegessé teszi a tűzfal használatát.", correct: false },
+            { text: "A NAT (hálózati címfordítás) is nyújt egyfajta alapvető védelmet a belső gépeknek.", correct: true },
+            { text: "A hálózati biztonsági házirend írásos dokumentum, amely rögzíti a szabályokat.", correct: true },
+            { text: "A jelszavas védelem elhagyható, ha a hálózat tűzfallal védett.", correct: false },
+            { text: "A biztonsági frissítések (patch) telepítése kritikus a hálózat védelme érdekében.", correct: true }
         ];
 
         let userAnswers = Array(questions.length).fill(null);
@@ -150,7 +179,7 @@
                         <button id="btn-${i}-false" onclick="setAnswer(${i}, false)">HAMIS</button>
                     </div>
                     <div class="correction-text" id="correct-${i}">
-                        HELYES VÁLASZ: ${q.correct ? 'IGAZ' : 'HAMIS'}
+                        ANALÍZIS: A helyes válasz a(z) ${q.correct ? 'IGAZ' : 'HAMIS'}.
                     </div>
                 </div>
             `).join('');
@@ -164,24 +193,35 @@
 
         function evaluateQuiz() {
             let score = 0;
+            let answeredCount = 0;
+
             questions.forEach((q, i) => {
                 const card = document.getElementById(`card-${i}`);
                 const correction = document.getElementById(`correct-${i}`);
                 
-                // Reset stílusok
                 card.classList.remove('error');
                 correction.style.display = 'none';
 
-                if (userAnswers[i] === q.correct) {
-                    score++;
+                if (userAnswers[i] !== null) {
+                    answeredCount++;
+                    if (userAnswers[i] === q.correct) {
+                        score++;
+                    } else {
+                        card.classList.add('error');
+                        correction.style.display = 'block';
+                    }
                 } else {
-                    // Ha rossz, bepirosítjuk és megmutatjuk a jót
-                    card.classList.add('error');
-                    correction.style.display = 'block';
+                    card.style.border = "1px solid yellow"; // Figyelmeztetés, ha nincs megválaszolva
                 }
             });
 
-            document.getElementById('final-score').innerText = `PONT: ${score} / ${questions.length}`;
+            const scoreDiv = document.getElementById('final-score');
+            scoreDiv.innerText = `${score} / ${questions.length}`;
+            
+            if (answeredCount < questions.length) {
+                alert("Figyelem! Néhány kérdésre nem válaszoltál.");
+            }
+            
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
