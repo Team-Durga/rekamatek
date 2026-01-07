@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hálózati Biztonság Kvíz</title>
+    <style>
+        :root {
+            --bg-color: #0d0d12;
+            --card-bg: #1a1a24;
+            --accent-neon: #00f2ff;
+            --accent-pink: #ff00c8;
+            --text-color: #e0e0e0;
+            --correct: #39ff14;
+            --wrong: #ff3131;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: var(--accent-neon);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--accent-neon);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent-pink);
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+
+        .question-card:hover {
+            transform: scale(1.01);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background: transparent;
+            border: 2px solid var(--accent-neon);
+            color: var(--accent-neon);
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: var(--accent-neon);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--accent-neon);
+        }
+
+        button.selected-true { background: var(--correct); border-color: var(--correct); color: black; }
+        button.selected-false { background: var(--wrong); border-color: var(--wrong); color: white; }
+
+        #result-area {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .score-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-pink);
+            text-shadow: 0 0 10px var(--accent-pink);
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .check-btn {
+            background: var(--accent-pink);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        .check-btn:hover {
+            background: #ff00a2;
+            box-shadow: 0 0 20px var(--accent-pink);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NETWORK SECURITY // QUIZ</h1>
+
+    <div class="quiz-container" id="quiz">
+        </div>
+
+    <div id="result-area">
+        <button class="check-btn" onclick="evaluateQuiz()">Eredmények ellenőrzése</button>
+        <div id="final-score" class="score-display"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, text: "A DSL-kapcsolatok normál telefonvonalakon működnek.", correct: true },
+            { id: 2, text: "A vezeték nélküli hálózaton belül a hálózathoz csatlakoztatott számítógépek vezeték nélküli egységei és a vezeték nélküli alapegység rádióhullámok útján létesít egymással kapcsolatot.", correct: true },
+            { id: 3, text: "SOHO környezetben a hozzáférési pontok általában körsugárzó ikerantennákat használnak, amelyek csak egy irányba sugározzák a jeleket.", correct: false },
+            { id: 4, text: "Egy rosszul beállított Wi-Fi hálózat könnyen támadható és sérülékeny lesz az illetéktelen felhasználókkal szemben.", correct: true },
+            { id: 5, text: "A WEP-et a WPA leváltása céljából fejlesztették ki.", correct: false },
+            { id: 6, text: "A WPA és a WPA2 ugyanazt a titkosítást használja.", correct: false },
+            { id: 7, text: "A tűzfal (angolul firewall) célja a számítástechnikában annak biztosítása, hogy a hálózaton keresztül egy adott számítógépbe ne történhessen illetéktelen behatolás.", correct: true },
+            { id: 8, text: "A személyes vagy vállalati hálózatok megbízhatatlan külső, és a megbízható belső része között elhelyezkedő terület a DMZ.", correct: true },
+            { id: 9, text: "Az alkalmazás szintű tűzfalaknál az adatcsomagok egyszerű szűrése a cél-port, valamint forrás- és célcím, egy a tűzfal-adminisztrátor által már definiált szabályrendszer alapján történik.", correct: false },
+            { id: 10, text: "A fejlett tűzfalak csendben dobják el a csomagokat, azaz az érintett kapcsolat egyszerűen nem jön létre/megszakad, de nincs konkrét visszajelzés.", correct: true }
+        ];
+
+        let userAnswers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('quiz');
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <div class="question-text"><strong>${q.id}.</strong> ${q.text}</div>
+                    <div class="options">
+                        <button id="btn-${index}-true" onclick="selectAnswer(${index}, true)">Igaz</button>
+                        <button id="btn-${index}-false" onclick="selectAnswer(${index}, false)">Hamis</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectAnswer(index, value) {
+            userAnswers[index] = value;
+            
+            // UI frissítése: gombok színezése
+            document.getElementById(`btn-${index}-true`).classList.remove('selected-true', 'selected-false');
+            document.getElementById(`btn-${index}-false`).classList.remove('selected-true', 'selected-false');
+            
+            if(value) {
+                document.getElementById(`btn-${index}-true`).classList.add('selected-true');
+            } else {
+                document.getElementById(`btn-${index}-false`).classList.add('selected-false');
+            }
+        }
+
+        function evaluateQuiz() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    score++;
+                }
+            });
+
+            const display = document.getElementById('final-score');
+            display.innerHTML = `EREDMÉNY: ${score} / ${questions.length}`;
+            
+            if(score === questions.length) {
+                display.style.color = "var(--correct)";
+                alert("Gratulálok! Minden válasz helyes. Rendszer feltörve! 😎");
+            } else {
+                display.style.color = "var(--accent-pink)";
+            }
+        }
+
+        initQuiz();
+    </script>
+</body>
+</html>
