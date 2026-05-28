@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Történelem Kvíz II.</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0f172a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.quiz-box{
+    background:#1e293b;
+    width:100%;
+    max-width:800px;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+h1{
+    text-align:center;
+    color:#38bdf8;
+}
+
+.question{
+    font-size:24px;
+    margin:20px 0;
+}
+
+.answers button{
+    width:100%;
+    margin:10px 0;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#334155;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.answers button:hover{
+    background:#475569;
+}
+
+.correct{
+    background:green !important;
+}
+
+.wrong{
+    background:crimson !important;
+}
+
+#nextBtn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#0ea5e9;
+    color:white;
+    font-size:18px;
+    margin-top:20px;
+    display:none;
+    cursor:pointer;
+}
+
+#score{
+    font-size:28px;
+    text-align:center;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+    <h1>Történelem Kvíz II.</h1>
+
+    <div id="counter"></div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+
+    <button id="nextBtn">Következő</button>
+
+    <div id="score"></div>
+</div>
+
+<script>
+
+const quiz = [
+
+{
+question:"Mi akadályozta a német gazdaság fejlődését?",
+answers:[
+{text:"Politikai és gazdasági széttagoltság",correct:true},
+{text:"Kevés folyó",correct:false},
+{text:"Kevés lakos",correct:false},
+{text:"Mezőgazdaság hiánya",correct:false}
+]
+},
+
+{
+question:"Miben bővelkedtek a német területek?",
+answers:[
+{text:"Nyersanyagokban",correct:true},
+{text:"Aranyban",correct:false},
+{text:"Gyémántban",correct:false},
+{text:"Kőolajban",correct:false}
+]
+},
+
+{
+question:"Mikor alakult meg a német vámszövetség?",
+answers:[
+{text:"1834",correct:true},
+{text:"1848",correct:false},
+{text:"1815",correct:false},
+{text:"1871",correct:false}
+]
+},
+
+{
+question:"Mi volt a nagy német egység terve?",
+answers:[
+{text:"Habsburg vezetéssel létrejövő államszövetség",correct:true},
+{text:"Porosz vezetés",correct:false},
+{text:"Francia vezetés",correct:false},
+{text:"Orosz vezetés",correct:false}
+]
+},
+
+{
+question:"Mi volt a kis német egység terve?",
+answers:[
+{text:"Porosz vezetés Ausztria nélkül",correct:true},
+{text:"Osztrák vezetés",correct:false},
+{text:"Francia vezetés",correct:false},
+{text:"Olasz vezetés",correct:false}
+]
+},
+
+{
+question:"Ki volt a porosz politika vezetője?",
+answers:[
+{text:"Otto von Bismarck",correct:true},
+{text:"Lincoln",correct:false},
+{text:"Napóleon",correct:false},
+{text:"Watt",correct:false}
+]
+},
+
+{
+question:"Mi volt Bismarck beceneve?",
+answers:[
+{text:"Vaskancellár",correct:true},
+{text:"Vörös báró",correct:false},
+{text:"Acélkirály",correct:false},
+{text:"Fekete herceg",correct:false}
+]
+},
+
+{
+question:"Mit vezetett be Bismarck a hadseregben?",
+answers:[
+{text:"Általános hadkötelezettséget",correct:true},
+{text:"Robotokat",correct:false},
+{text:"Tankokat",correct:false},
+{text:"Repülőgépeket",correct:false}
+]
+},
+
+{
+question:"Melyik csatában győzték le az osztrákokat?",
+answers:[
+{text:"Königgrätzi csata",correct:true},
+{text:"Sedani csata",correct:false},
+{text:"Waterloo",correct:false},
+{text:"Mohács",correct:false}
+]
+},
+
+{
+question:"Mi alakult meg az osztrák vereség után?",
+answers:[
+{text:"Észak-német Szövetség",correct:true},
+{text:"NATO",correct:false},
+{text:"ENSZ",correct:false},
+{text:"Európai Unió",correct:false}
+]
+},
+
+{
+question:"Melyik ország érezte veszélyben hatalmát a német egység miatt?",
+answers:[
+{text:"Franciaország",correct:true},
+{text:"Olaszország",correct:false},
+{text:"Spanyolország",correct:false},
+{text:"Belgium",correct:false}
+]
+},
+
+{
+question:"Mikor győzték le a poroszok a franciákat Sedanban?",
+answers:[
+{text:"1870",correct:true},
+{text:"1848",correct:false},
+{text:"1914",correct:false},
+{text:"1815",correct:false}
+]
+},
+
+{
+question:"Ki került fogságba a sedani csata után?",
+answers:[
+{text:"III. Napóleon",correct:true},
+{text:"Bismarck",correct:false},
+{text:"Lincoln",correct:false},
+{text:"Ferenc József",correct:false}
+]
+},
+
+{
+question:"Hol kiáltották ki a Német Császárságot?",
+answers:[
+{text:"Versailles-ban",correct:true},
+{text:"Berlinben",correct:false},
+{text:"Bécsben",correct:false},
+{text:"Londonban",correct:false}
+]
+},
+
+{
+question:"Mikor alakult meg a Német Császárság?",
+answers:[
+{text:"1871",correct:true},
+{text:"1848",correct:false},
+{text:"1918",correct:false},
+{text:"1800",correct:false}
+]
+},
+
+{
+question:"Melyik két francia tartományt veszítették el a franciák?",
+answers:[
+{text:"Elzász és Lotharingia",correct:true},
+{text:"Normandia és Bretagne",correct:false},
+{text:"Korzika és Provence",correct:false},
+{text:"Burgundia és Champagne",correct:false}
+]
+},
+
+{
+question:"Ki nevezte ki a kancellárt Németországban?",
+answers:[
+{text:"A császár",correct:true},
+{text:"A nép",correct:false},
+{text:"A parlament",correct:false},
+{text:"A hadsereg",correct:false}
+]
+},
+
+{
+question:"Melyik országba érkezett sok bevándorló a XIX. században?",
+answers:[
+{text:"USA",correct:true},
+{text:"Kína",correct:false},
+{text:"India",correct:false},
+{text:"Oroszország",correct:false}
+]
+},
+
+{
+question:"Kiket szorítottak ki az amerikai telepesek?",
+answers:[
+{text:"Indiánokat",correct:true},
+{text:"Vikingeket",correct:false},
+{text:"Rómaiakat",correct:false},
+{text:"Pirátákat",correct:false}
+]
+},
+
+{
+question:"Mi vonzotta a bevándorlókat Amerikába?",
+answers:[
+{text:"Aranyláz",correct:true},
+{text:"Hóviharok",correct:false},
+{text:"Háborúk",correct:false},
+{text:"Kalózok",correct:false}
+]
+},
+
+{
+question:"Mi épült gyorsan az USA-ban?",
+answers:[
+{text:"Vasútvonalak",correct:true},
+{text:"Piramisok",correct:false},
+{text:"Kastélyok",correct:false},
+{text:"Falak",correct:false}
+]
+},
+
+{
+question:"Milyen gazdaság volt jellemző Északra?",
+answers:[
+{text:"Fejlett gyáripar",correct:true},
+{text:"Ültetvényes gazdaság",correct:false},
+{text:"Nomád életmód",correct:false},
+{text:"Bányászat",correct:false}
+]
+},
+
+{
+question:"Milyen gazdaság volt jellemző Délre?",
+answers:[
+{text:"Ültetvényes nagybirtok",correct:true},
+{text:"Kisparaszti gazdaság",correct:false},
+{text:"Kézműipar",correct:false},
+{text:"Halászat",correct:false}
+]
+},
+
+{
+question:"Milyen munkát alkalmaztak Délen?",
+answers:[
+{text:"Rabszolgamunka",correct:true},
+{text:"Bérmunka",correct:false},
+{text:"Robotmunka",correct:false},
+{text:"Önkéntes munka",correct:false}
+]
+},
+
+{
+question:"Mit elleneztek az északi államok?",
+answers:[
+{text:"Rabszolgaságot",correct:true},
+{text:"Vasútépítést",correct:false},
+{text:"Iparosodást",correct:false},
+{text:"Kereskedelmet",correct:false}
+]
+},
+
+{
+question:"Ki nyerte az 1860-as amerikai elnökválasztást?",
+answers:[
+{text:"Abraham Lincoln",correct:true},
+{text:"Washington",correct:false},
+{text:"Roosevelt",correct:false},
+{text:"Kennedy",correct:false}
+]
+},
+
+{
+question:"Melyik párt jelöltje volt Lincoln?",
+answers:[
+{text:"Republikánus Párt",correct:true},
+{text:"Demokrata Párt",correct:false},
+{text:"Munkáspárt",correct:false},
+{text:"Liberális Párt",correct:false}
+]
+},
+
+{
+question:"Mi volt Lincoln egyik fő célja?",
+answers:[
+{text:"Rabszolgák felszabadítása",correct:true},
+{text:"Királyság bevezetése",correct:false},
+{text:"Vasút megszüntetése",correct:false},
+{text:"Háború indítása Európában",correct:false}
+]
+},
+
+{
+question:"Mit akartak tenni a déli államok?",
+answers:[
+{text:"Kilépni az Unióból",correct:true},
+{text:"Belépni Európába",correct:false},
+{text:"Királyt választani",correct:false},
+{text:"Feloszlatni az északi hadsereget",correct:false}
+]
+},
+
+{
+question:"Mikor zajlott az amerikai polgárháború?",
+answers:[
+{text:"1861-1865",correct:true},
+{text:"1914-1918",correct:false},
+{text:"1939-1945",correct:false},
+{text:"1848-1849",correct:false}
+]
+},
+
+{
+question:"Melyik oldal volt erősebb gazdaságilag?",
+answers:[
+{text:"Észak",correct:true},
+{text:"Dél",correct:false},
+{text:"Mindkettő egyforma",correct:false},
+{text:"Egyik sem",correct:false}
+]
+},
+
+{
+question:"Mit adott ki Lincoln 1862-ben?",
+answers:[
+{text:"Telepítési törvényt",correct:true},
+{text:"Aranybullát",correct:false},
+{text:"Függetlenségi nyilatkozatot",correct:false},
+{text:"Alkotmányt",correct:false}
+]
+},
+
+{
+question:"Mikor szabadították fel a rabszolgákat?",
+answers:[
+{text:"1863",correct:true},
+{text:"1848",correct:false},
+{text:"1871",correct:false},
+{text:"1914",correct:false}
+]
+},
+
+{
+question:"Ki győzött az amerikai polgárháborúban?",
+answers:[
+{text:"Északiak",correct:true},
+{text:"Déliek",correct:false},
+{text:"Angolok",correct:false},
+{text:"Franciák",correct:false}
+]
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const question = document.getElementById("question");
+const answers = document.getElementById("answers");
+const nextBtn = document.getElementById("nextBtn");
+const scoreDiv = document.getElementById("score");
+const counter = document.getElementById("counter");
+
+function showQuestion(){
+
+answers.innerHTML="";
+
+let q = quiz[currentQuestion];
+
+counter.innerText =
+`Kérdés ${currentQuestion+1} / ${quiz.length}`;
+
+question.innerText = q.question;
+
+q.answers.forEach(answer=>{
+
+const btn = document.createElement("button");
+
+btn.innerText = answer.text;
+
+btn.onclick = ()=>selectAnswer(btn,answer.correct);
+
+answers.appendChild(btn);
+
+});
+}
+
+function selectAnswer(btn,correct){
+
+const buttons = answers.querySelectorAll("button");
+
+buttons.forEach(button=>button.disabled=true);
+
+if(correct){
+
+btn.classList.add("correct");
+score++;
+
+}else{
+
+btn.classList.add("wrong");
+
+buttons.forEach((button,index)=>{
+
+if(quiz[currentQuestion].answers[index].correct){
+
+button.classList.add("correct");
+
+}
+
+});
+
+}
+
+nextBtn.style.display="block";
+}
+
+nextBtn.onclick=()=>{
+
+currentQuestion++;
+
+nextBtn.style.display="none";
+
+if(currentQuestion<quiz.length){
+
+showQuestion();
+
+}else{
+
+question.innerText="Vége!";
+answers.innerHTML="";
+counter.innerHTML="";
+scoreDiv.innerHTML=`Pontszám: ${score}/${quiz.length}`;
+
+}
+}
+
+showQuestion();
+
+</script>
+
+</body>
+</html>
