@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ipari Forradalom Kvíz 1</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0f172a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.quiz-box{
+    background:#1e293b;
+    width:100%;
+    max-width:800px;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+h1{
+    text-align:center;
+    color:#38bdf8;
+}
+
+.question{
+    font-size:24px;
+    margin:20px 0;
+}
+
+.answers button{
+    width:100%;
+    margin:10px 0;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#334155;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.answers button:hover{
+    background:#475569;
+}
+
+.correct{
+    background:green !important;
+}
+
+.wrong{
+    background:crimson !important;
+}
+
+#nextBtn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#0ea5e9;
+    color:white;
+    font-size:18px;
+    margin-top:20px;
+    display:none;
+    cursor:pointer;
+}
+
+#score{
+    font-size:28px;
+    text-align:center;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+    <h1>Ipari Forradalom Kvíz I.</h1>
+
+    <div id="counter"></div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+
+    <button id="nextBtn">Következő</button>
+
+    <div id="score"></div>
+</div>
+
+<script>
+
+const quiz = [
+
+{
+question:"Mit nevezünk ipari forradalomnak?",
+answers:[
+{text:"Gazdasági fellendülést",correct:true},
+{text:"Háborút",correct:false},
+{text:"Vallási reformot",correct:false},
+{text:"Politikai rendszert",correct:false}
+]
+},
+
+{
+question:"Hol kezdődött az első ipari forradalom?",
+answers:[
+{text:"Franciaországban",correct:false},
+{text:"Angliában",correct:true},
+{text:"Németországban",correct:false},
+{text:"Oroszországban",correct:false}
+]
+},
+
+{
+question:"Mikor kezdődött az első ipari forradalom?",
+answers:[
+{text:"1780-as években",correct:true},
+{text:"1600-ban",correct:false},
+{text:"1914-ben",correct:false},
+{text:"1950-ben",correct:false}
+]
+},
+
+{
+question:"Mi volt az első ipari forradalom fő energiaforrása?",
+answers:[
+{text:"Villamos energia",correct:false},
+{text:"Gőzenergia",correct:true},
+{text:"Napenergia",correct:false},
+{text:"Olaj",correct:false}
+]
+},
+
+{
+question:"Mi volt az első ipari forradalom húzóágazata?",
+answers:[
+{text:"Vegyipar",correct:false},
+{text:"Textilipar",correct:true},
+{text:"Autóipar",correct:false},
+{text:"Elektronika",correct:false}
+]
+},
+
+{
+question:"Melyik ágazatban jelentek meg új találmányok?",
+answers:[
+{text:"Fonás és szövés",correct:true},
+{text:"Repülés",correct:false},
+{text:"Bányászat",correct:false},
+{text:"Orvostudomány",correct:false}
+]
+},
+
+{
+question:"Mi szűnt meg a vetésforgó kialakulásával?",
+answers:[
+{text:"Ugar",correct:true},
+{text:"Földművelés",correct:false},
+{text:"Állattenyésztés",correct:false},
+{text:"Kereskedelem",correct:false}
+]
+},
+
+{
+question:"Mi terjedt el a mezőgazdaságban?",
+answers:[
+{text:"Istállózó állattartás",correct:true},
+{text:"Nomád pásztorkodás",correct:false},
+{text:"Halászat",correct:false},
+{text:"Vadászat",correct:false}
+]
+},
+
+{
+question:"Mit nevezünk tagosításnak?",
+answers:[
+{text:"Földek nagyobb egységekbe vonását",correct:true},
+{text:"Adóemelést",correct:false},
+{text:"Kereskedelmi szerződést",correct:false},
+{text:"Városépítést",correct:false}
+]
+},
+
+{
+question:"Mi lett a földjüket elvesztő parasztokból?",
+answers:[
+{text:"Bérmunkások",correct:true},
+{text:"Királyok",correct:false},
+{text:"Lovagok",correct:false},
+{text:"Papok",correct:false}
+]
+},
+
+{
+question:"Ki találta fel a vetőgépet?",
+answers:[
+{text:"James Watt",correct:false},
+{text:"Jethro Tull",correct:true},
+{text:"Stephenson",correct:false},
+{text:"Edison",correct:false}
+]
+},
+
+{
+question:"Hol folyt a termelés a középkorban?",
+answers:[
+{text:"Céhekben és manufaktúrákban",correct:true},
+{text:"Gyárakban",correct:false},
+{text:"Bankokban",correct:false},
+{text:"Parlamentben",correct:false}
+]
+},
+
+{
+question:"Mi növelte a textilipari termékek iránti keresletet?",
+answers:[
+{text:"Gyarmatosítás",correct:true},
+{text:"Éhínség",correct:false},
+{text:"Háború",correct:false},
+{text:"Forradalom",correct:false}
+]
+},
+
+{
+question:"Mi volt a fonógép neve?",
+answers:[
+{text:"Jenny",correct:true},
+{text:"Victoria",correct:false},
+{text:"Anna",correct:false},
+{text:"Mary",correct:false}
+]
+},
+
+{
+question:"Ki találta fel a gőzgépet?",
+answers:[
+{text:"James Watt",correct:true},
+{text:"Lincoln",correct:false},
+{text:"Bismarck",correct:false},
+{text:"Ford",correct:false}
+]
+},
+
+{
+question:"Miért kellett fejleszteni a közlekedést?",
+answers:[
+{text:"Áruk gyorsabb szállítása miatt",correct:true},
+{text:"Turizmus miatt",correct:false},
+{text:"Sport miatt",correct:false},
+{text:"Ünnepségek miatt",correct:false}
+]
+},
+
+{
+question:"Ki találta fel a gőzmozdonyt?",
+answers:[
+{text:"Stephenson",correct:true},
+{text:"Watt",correct:false},
+{text:"Fulton",correct:false},
+{text:"Edison",correct:false}
+]
+},
+
+{
+question:"Ki találta fel a gőzhajót?",
+answers:[
+{text:"Fulton",correct:true},
+{text:"Stephenson",correct:false},
+{text:"Ford",correct:false},
+{text:"Lincoln",correct:false}
+]
+},
+
+{
+question:"Mi indult meg a vasútépítéssel?",
+answers:[
+{text:"Nehézipar fejlődése",correct:true},
+{text:"Turizmus",correct:false},
+{text:"Sportélet",correct:false},
+{text:"Oktatás",correct:false}
+]
+},
+
+{
+question:"Mi fejlődött a vasútépítések miatt?",
+answers:[
+{text:"Vaskohászat",correct:true},
+{text:"Zeneipar",correct:false},
+{text:"Filmipar",correct:false},
+{text:"Mezőgazdaság",correct:false}
+]
+},
+
+{
+question:"Mi történt a népességgel?",
+answers:[
+{text:"Növekedett",correct:true},
+{text:"Csökkent",correct:false},
+{text:"Eltűnt",correct:false},
+{text:"Nem változott",correct:false}
+]
+},
+
+{
+question:"Mik jöttek létre a városiasodás során?",
+answers:[
+{text:"Nagyvárosok",correct:true},
+{text:"Falvak",correct:false},
+{text:"Kolostorok",correct:false},
+{text:"Erődök",correct:false}
+]
+},
+
+{
+question:"Mi jelent meg a nagyvárosokban?",
+answers:[
+{text:"Környezetszennyezés",correct:true},
+{text:"Sivatag",correct:false},
+{text:"Kalózok",correct:false},
+{text:"Aranybánya",correct:false}
+]
+},
+
+{
+question:"Mit jelent a szegregáció?",
+answers:[
+{text:"Elkülönülés",correct:true},
+{text:"Egyesülés",correct:false},
+{text:"Kereskedelem",correct:false},
+{text:"Háború",correct:false}
+]
+},
+
+{
+question:"Melyik ipari forradalom hulláma kezdődött a XIX. század végén?",
+answers:[
+{text:"II. ipari forradalom",correct:true},
+{text:"I. ipari forradalom",correct:false},
+{text:"Francia forradalom",correct:false},
+{text:"Digitális forradalom",correct:false}
+]
+},
+
+{
+question:"Hol zajlott főként a II. ipari forradalom?",
+answers:[
+{text:"Nyugat-Európa és USA",correct:true},
+{text:"Afrika",correct:false},
+{text:"Ausztrália",correct:false},
+{text:"Dél-Amerika",correct:false}
+]
+},
+
+{
+question:"Mi volt a II. ipari forradalom húzóágazata?",
+answers:[
+{text:"Nehézipar",correct:true},
+{text:"Textilipar",correct:false},
+{text:"Mezőgazdaság",correct:false},
+{text:"Kézműipar",correct:false}
+]
+},
+
+{
+question:"Milyen új motor jelent meg?",
+answers:[
+{text:"Robbanómotor",correct:true},
+{text:"Vízmotor",correct:false},
+{text:"Szélmotor",correct:false},
+{text:"Kézimotor",correct:false}
+]
+},
+
+{
+question:"Milyen másik új motor jelent meg?",
+answers:[
+{text:"Villanymotor",correct:true},
+{text:"Fa motor",correct:false},
+{text:"Láncmotor",correct:false},
+{text:"Kőmotor",correct:false}
+]
+},
+
+{
+question:"Mi növelte a gyárak hatékonyságát?",
+answers:[
+{text:"Futószalag",correct:true},
+{text:"Kézi munka",correct:false},
+{text:"Lovaskocsi",correct:false},
+{text:"Szélmalom",correct:false}
+]
+},
+
+{
+question:"Milyen szervezeteket hoztak létre a nagyvállalatok?",
+answers:[
+{text:"Monopóliumokat",correct:true},
+{text:"Kolostorokat",correct:false},
+{text:"Pártokat",correct:false},
+{text:"Falvakat",correct:false}
+]
+},
+
+{
+question:"Ki készítette a szénszálas izzólámpát?",
+answers:[
+{text:"Edison",correct:true},
+{text:"Watt",correct:false},
+{text:"Lincoln",correct:false},
+{text:"Stephenson",correct:false}
+]
+},
+
+{
+question:"Milyen energiahordozó jelent meg?",
+answers:[
+{text:"Elektromos energia",correct:true},
+{text:"Szénpor",correct:false},
+{text:"Fa",correct:false},
+{text:"Szél",correct:false}
+]
+},
+
+{
+question:"Kik készítették az első repülőgépet?",
+answers:[
+{text:"Wright-testvérek",correct:true},
+{text:"Ford testvérek",correct:false},
+{text:"Bismarck testvérek",correct:false},
+{text:"Lincoln testvérek",correct:false}
+]
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const question = document.getElementById("question");
+const answers = document.getElementById("answers");
+const nextBtn = document.getElementById("nextBtn");
+const scoreDiv = document.getElementById("score");
+const counter = document.getElementById("counter");
+
+function showQuestion(){
+
+    answers.innerHTML = "";
+
+    let q = quiz[currentQuestion];
+
+    counter.innerText =
+    `Kérdés ${currentQuestion+1} / ${quiz.length}`;
+
+    question.innerText = q.question;
+
+    q.answers.forEach(answer=>{
+
+        const btn = document.createElement("button");
+
+        btn.innerText = answer.text;
+
+        btn.onclick = ()=>selectAnswer(btn,answer.correct);
+
+        answers.appendChild(btn);
+    });
+}
+
+function selectAnswer(btn,correct){
+
+    const buttons = answers.querySelectorAll("button");
+
+    buttons.forEach(button=>button.disabled=true);
+
+    if(correct){
+        btn.classList.add("correct");
+        score++;
+    }else{
+        btn.classList.add("wrong");
+
+        buttons.forEach((button,index)=>{
+            if(quiz[currentQuestion].answers[index].correct){
+                button.classList.add("correct");
+            }
+        });
+    }
+
+    nextBtn.style.display="block";
+}
+
+nextBtn.onclick=()=>{
+
+    currentQuestion++;
+
+    nextBtn.style.display="none";
+
+    if(currentQuestion<quiz.length){
+        showQuestion();
+    }else{
+        question.innerText="Vége!";
+        answers.innerHTML="";
+        counter.innerHTML="";
+        scoreDiv.innerHTML=`Pontszám: ${score}/${quiz.length}`;
+    }
+}
+
+showQuestion();
+
+</script>
+
+</body>
+</html>
