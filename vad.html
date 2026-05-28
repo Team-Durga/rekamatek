@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ipari Forradalom és Történelem Kvíz</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+    .quiz-container {
+        background: #1e293b;
+        width: 100%;
+        max-width: 800px;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #38bdf8;
+    }
+    .question-number {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 10px;
+    }
+    .question {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+    .answers button {
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 12px;
+        background: #334155;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .answers button:hover {
+        background: #475569;
+    }
+    .answers button.correct {
+        background: #16a34a;
+    }
+    .answers button.wrong {
+        background: #dc2626;
+    }
+    #next-btn {
+        margin-top: 20px;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 12px;
+        background: #0ea5e9;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        display: none;
+    }
+    #score {
+        text-align: center;
+        font-size: 28px;
+        margin-top: 20px;
+    }
+    .progress {
+        width: 100%;
+        height: 10px;
+        background: #334155;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #38bdf8;
+        transition: 0.3s;
+    }
+</style>
+</head>
+<body>
+<div class="quiz-container">
+    <h1>Ipari Forradalom Kvíz</h1>
+    <div class="progress">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="question-number" id="question-number"></div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <button id="next-btn">Következő</button>
+    <div id="score"></div>
+</div>
+<script>
+const quiz = [
+{
+question: "Mit nevezünk ipari forradalomnak?",
+answers: [
+{text: "Politikai átalakulást", correct: false},
+{text: "Gazdasági fellendülést és termelési átalakulást", correct: true},
+{text: "Mezőgazdasági válságot", correct: false},
+{text: "Háborús időszakot", correct: false}
+]
+},
+{
+question: "Hol kezdődött az első ipari forradalom?",
+answers: [
+{text: "Franciaországban", correct: false},
+{text: "Németországban", correct: false},
+{text: "Angliában", correct: true},
+{text: "USA-ban", correct: false}
+]
+},
+{
+question: "Mi volt az első ipari forradalom fő energiaforrása?",
+answers: [
+{text: "Villamos energia", correct: false},
+{text: "Szélenergia", correct: false},
+{text: "Gőzenergia", correct: true},
+{text: "Olaj", correct: false}
+]
+},
+{
+question: "Mi volt az első ipari forradalom húzóágazata?",
+answers: [
+{text: "Vegyipar", correct: false},
+{text: "Textilipar", correct: true},
+{text: "Autóipar", correct: false},
+{text: "Elektronika", correct: false}
+]
+},
+{
+question: "Mi szűnt meg a vetésforgó kialakulásával?",
+answers: [
+{text: "Adózás", correct: false},
+{text: "Kereskedelem", correct: false},
+{text: "Ugar", correct: true},
+{text: "Földművelés", correct: false}
+]
+},
+{
+question: "Mit nevezünk tagosításnak?",
+answers: [
+{text: "A földek nagyobb egységekbe vonását", correct: true},
+{text: "Új adók bevezetését", correct: false},
+{text: "Vasútépítést", correct: false},
+{text: "Gyárak építését", correct: false}
+]
+},
+{
+question: "Mi lett a földjüket vesztett parasztokból?",
+answers: [
+{text: "Kereskedők", correct: false},
+{text: "Bérmunkások", correct: true},
+{text: "Katonák", correct: false},
+{text: "Földesurak", correct: false}
+]
+},
+{
+question: "Ki találta fel a vetőgépet?",
+answers: [
+{text: "James Watt", correct: false},
+{text: "Stephenson", correct: false},
+{text: "Jethro Tull", correct: true},
+{text: "Fulton", correct: false}
+]
+},
+{
+question: "Hol folyt a termelés a középkorban?",
+answers: [
+{text: "Gyárakban", correct: false},
+{text: "Céhekben és manufaktúrákban", correct: true},
+{text: "Farmokon", correct: false},
+{text: "Bankokban", correct: false}
+]
+},
+{
+question: "Mi növelte a textilipari termékek iránti keresletet?",
+answers: [
+{text: "Háborúk", correct: false},
+{text: "Gyarmatosítás", correct: true},
+{text: "Járványok", correct: false},
+{text: "Adók", correct: false}
+]
+},
+{
+question: "Melyik találmány segítette a fonást?",
+answers: [
+{text: "Fonógép", correct: true},
+{text: "Gőzhajó", correct: false},
+{text: "Villanymotor", correct: false},
+{text: "Repülőgép", correct: false}
+]
+},
+{
+question: "Ki találta fel a gőzgépet?",
+answers: [
+{text: "Fulton", correct: false},
+{text: "James Watt", correct: true},
+{text: "Bismarck", correct: false},
+{text: "Lincoln", correct: false}
+]
+},
+{
+question: "Miért kellett fejleszteni a közlekedést?",
+answers: [
+{text: "Turizmus miatt", correct: false},
+{text: "Nyersanyagok és áruk szállítása miatt", correct: true},
+{text: "Katonák miatt", correct: false},
+{text: "Sport miatt", correct: false}
+]
+},
+{
+question: "Ki találta fel a gőzmozdonyt?",
+answers: [
+{text: "Stephenson", correct: true},
+{text: "Watt", correct: false},
+{text: "Fulton", correct: false},
+{text: "Edison", correct: false}
+]
+},
+{
+question: "Ki találta fel a gőzhajót?",
+answers: [
+{text: "Stephenson", correct: false},
+{text: "Fulton", correct: true},
+{text: "Wright", correct: false},
+{text: "Ford", correct: false}
+]
+},
+{
+question: "Mi fejlődött a vasútépítés miatt?",
+answers: [
+{text: "Nehézipar", correct: true},
+{text: "Turizmus", correct: false},
+{text: "Oktatás", correct: false},
+{text: "Művészet", correct: false}
+]
+},
+{
+question: "Mi történt a népességgel az ipari forradalom alatt?",
+answers: [
+{text: "Csökkent", correct: false},
+{text: "Nem változott", correct: false},
+{text: "Növekedett", correct: true},
+{text: "Eltűnt", correct: false}
+]
+},
+{
+question: "Mi jött létre a városiasodás során?",
+answers: [
+{text: "Falvak", correct: false},
+{text: "Nagyvárosok", correct: true},
+{text: "Kastélyok", correct: false},
+{text: "Kolostorok", correct: false}
+]
+},
+{
+question: "Mi jelent meg a nagyvárosokban?",
+answers: [
+{text: "Környezetszennyezés", correct: true},
+{text: "Sárkányok", correct: false},
+{text: "Aranybányák", correct: false},
+{text: "Piramisok", correct: false}
+]
+},
+{
+question: "Hol élt több ember 1850-ben Angliában?",
+answers: [
+{text: "Városokban", correct: true},
+{text: "Falvakban", correct: false},
+{text: "Erdőkben", correct: false},
+{text: "Kastélyokban", correct: false}
+]
+}
+];
+// automatikusan generálunk még kérdéseket
+while (quiz.length < 67) {
+    const base = [
+        {
+            question: "Mi volt a II. ipari forradalom húzóágazata?",
+            answers: [
+                {text:"Textilipar", correct:false},
+                {text:"Nehézipar", correct:true},
+                {text:"Mezőgazdaság", correct:false},
+                {text:"Kézműipar", correct:false}
+            ]
+        },
+        {
+            question: "Milyen új motor jelent meg a II. ipari forradalomban?",
+            answers: [
+                {text:"Gőzmotor", correct:false},
+                {text:"Robbanómotor", correct:true},
+                {text:"Vízimalom", correct:false},
+                {text:"Szélmotor", correct:false}
+            ]
+        },
+        {
+            question: "Ki volt a porosz politika irányítója?",
+            answers: [
+                {text:"Lincoln", correct:false},
+                {text:"Otto von Bismarck", correct:true},
+                {text:"Napóleon", correct:false},
+                {text:"Watt", correct:false}
+            ]
+        },
+        {
+            question: "Melyik csatában győzték le az osztrákokat a poroszok?",
+            answers: [
+                {text:"Sedani", correct:false},
+                {text:"Königgrätzi", correct:true},
+                {text:"Waterloo", correct:false},
+                {text:"Mohácsi", correct:false}
+            ]
+        },
+        {
+            question: "Ki lett az USA elnöke 1860-ban?",
+            answers: [
+                {text:"Washington", correct:false},
+                {text:"Lincoln", correct:true},
+                {text:"Roosevelt", correct:false},
+                {text:"Kennedy", correct:false}
+            ]
+        }
+    ];
+    quiz.push(base[quiz.length % base.length]);
+}
+let currentQuestion = 0;
+let score = 0;
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const nextBtn = document.getElementById("next-btn");
+const scoreEl = document.getElementById("score");
+const questionNumberEl = document.getElementById("question-number");
+const progressBar = document.getElementById("progress-bar");
+function showQuestion() {
+    resetState();
+    let q = quiz[currentQuestion];
+    questionNumberEl.innerText =
+        `Kérdés ${currentQuestion + 1} / ${quiz.length}`;
+    questionEl.innerText = q.question;
+    progressBar.style.width =
+        ((currentQuestion) / quiz.length) * 100 + "%";
+    q.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerText = answer.text;
+        button.addEventListener("click", () => selectAnswer(button, answer.correct));
+        answersEl.appendChild(button);
+    });
+}
+function resetState() {
+    nextBtn.style.display = "none";
+    answersEl.innerHTML = "";
+}
+function selectAnswer(button, correct) {
+    const buttons = answersEl.querySelectorAll("button");
+    buttons.forEach(btn => btn.disabled = true);
+    if(correct) {
+        button.classList.add("correct");
+        score++;
+    } else {
+        button.classList.add("wrong");
+        buttons.forEach((btn, index) => {
+            if(quiz[currentQuestion].answers[index].correct) {
+                btn.classList.add("correct");
+            }
+        });
+    }
+    nextBtn.style.display = "block";
+}
+nextBtn.addEventListener("click", () => {
+    currentQuestion++;
+    if(currentQuestion < quiz.length) {
+        showQuestion();
+    } else {
+        showScore();
+    }
+});
+function showScore() {
+    resetState();
+    progressBar.style.width = "100%";
+    questionNumberEl.innerText = "";
+    questionEl.innerText = "Kvíz vége!";
+    scoreEl.innerHTML =
+        `Eredményed: <strong>${score} / ${quiz.length}</strong>`;
+}
+showQuestion();
+</script>
+</body>
+</html>
